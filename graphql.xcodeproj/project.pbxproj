@@ -187,7 +187,7 @@
 				EB86F1D51CBD820E00021DCE /* Info-watchOS.plist */,
 				EB86F1D01CBD819D00021DCE /* graphql.swift */,
 			);
-			name = Sources;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1299,6 +1299,7 @@
 				EB4791BD1CBD85E200C04D13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EB4791CB1CBD85F400C04D13 /* Build configuration list for PBXNativeTarget "GraphQL iOS Tests" */ = {
 			isa = XCConfigurationList;
@@ -1307,6 +1308,7 @@
 				EB4791CD1CBD85F400C04D13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EB4791DA1CBD8AF700C04D13 /* Build configuration list for PBXNativeTarget "GraphQL tvOS Tests" */ = {
 			isa = XCConfigurationList;
@@ -1315,6 +1317,7 @@
 				EB4791DC1CBD8AF700C04D13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EB86F1A31CBD810200021DCE /* Build configuration list for PBXNativeTarget "GraphQL iOS" */ = {
 			isa = XCConfigurationList;
