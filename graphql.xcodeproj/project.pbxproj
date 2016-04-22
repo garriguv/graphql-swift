@@ -7,20 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EB4791B71CBD85E200C04D13 /* GraphQL_OS_X_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4791B61CBD85E200C04D13 /* GraphQL_OS_X_Tests.swift */; };
+		9FD5B07E2C696751E4AF616B /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */; };
+		9FD5B13F5F720BF712D0FB46 /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */; };
+		9FD5B1752AFD5F5AF4AFF778 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
+		9FD5B37A2B64F8AADA46B21A /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
+		9FD5B3A79EE79B7FB88E1DD4 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
+		9FD5B522488732CCBB06461B /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
+		9FD5B6B45CE0AF6F23683331 /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
+		9FD5B752A4093BEB3C8DFF5D /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
+		9FD5B7B84A03277E87DD5FCB /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
+		9FD5B92A3A3E3CD0525EC946 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
+		9FD5B9A8224465ADFD354677 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
+		9FD5BA42DC5B3035134F07A6 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
+		9FD5BA6284D3000CA76C1A9A /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
+		9FD5BC88E8CFBFB1787AAB32 /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
+		9FD5BD28B4AE136B2BAA2834 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
+		9FD5BE26AE0249521238FE71 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
+		9FD5BF64173E8E065DACFB35 /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */; };
+		9FD5BFBFE7F98A235568BECF /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
 		EB4791B91CBD85E200C04D13 /* GraphQL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB86F1C31CBD813B00021DCE /* GraphQL.framework */; };
-		EB4791C61CBD85F400C04D13 /* GraphQL_iOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4791C51CBD85F400C04D13 /* GraphQL_iOS_Tests.swift */; };
 		EB4791C81CBD85F400C04D13 /* GraphQL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB86F19B1CBD810200021DCE /* GraphQL.framework */; };
-		EB4791D51CBD8AF700C04D13 /* GraphQL_tvOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4791D41CBD8AF700C04D13 /* GraphQL_tvOS_Tests.swift */; };
 		EB4791D71CBD8AF700C04D13 /* GraphQL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB86F1B61CBD812C00021DCE /* GraphQL.framework */; };
-		EB86F1D11CBD819D00021DCE /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB86F1D01CBD819D00021DCE /* graphql.swift */; };
-		EB86F1DB1CBD82C400021DCE /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EB86F1DA1CBD82C400021DCE /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EB86F1DC1CBD82D500021DCE /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EB86F1DA1CBD82C400021DCE /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EB86F1DD1CBD82D500021DCE /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EB86F1DA1CBD82C400021DCE /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EB86F1DE1CBD82D600021DCE /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EB86F1DA1CBD82C400021DCE /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EB86F1DF1CBD830500021DCE /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB86F1D01CBD819D00021DCE /* graphql.swift */; };
-		EB86F1E01CBD830500021DCE /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB86F1D01CBD819D00021DCE /* graphql.swift */; };
-		EB86F1E11CBD830600021DCE /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB86F1D01CBD819D00021DCE /* graphql.swift */; };
+		EBB78EA71CC9332400D366AB /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB78EA11CC9332400D366AB /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EBB78EA81CC9332400D366AB /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB78EA21CC9332400D366AB /* graphql.swift */; };
+		EBB78EA91CC9332400D366AB /* Info-iOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EA31CC9332400D366AB /* Info-iOS.plist */; };
+		EBB78EAA1CC9332400D366AB /* Info-OSX.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EA41CC9332400D366AB /* Info-OSX.plist */; };
+		EBB78EAB1CC9332400D366AB /* Info-tvOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EA51CC9332400D366AB /* Info-tvOS.plist */; };
+		EBB78EAC1CC9332400D366AB /* Info-watchOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EA61CC9332400D366AB /* Info-watchOS.plist */; };
+		EBB78EAD1CC9332800D366AB /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB78EA21CC9332400D366AB /* graphql.swift */; };
+		EBB78EAE1CC9332900D366AB /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB78EA21CC9332400D366AB /* graphql.swift */; };
+		EBB78EAF1CC9332900D366AB /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB78EA21CC9332400D366AB /* graphql.swift */; };
+		EBB78EB01CC9332D00D366AB /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB78EA11CC9332400D366AB /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EBB78EB11CC9332D00D366AB /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB78EA11CC9332400D366AB /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EBB78EB21CC9332E00D366AB /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB78EA11CC9332400D366AB /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EBB78EB61CCAAE2E00D366AB /* Info-iOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EB31CCAAE2E00D366AB /* Info-iOS.plist */; };
+		EBB78EB71CCAAE2E00D366AB /* Info-OSX.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EB41CCAAE2E00D366AB /* Info-OSX.plist */; };
+		EBB78EB81CCAAE2E00D366AB /* Info-tvOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EB51CCAAE2E00D366AB /* Info-tvOS.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,25 +70,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
+		9FD5B3BAC305189E35253A1C /* Lexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
+		9FD5B4DE56C84A88027883C1 /* Ast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ast.swift; sourceTree = "<group>"; };
+		9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		9FD5BAF9AC8C6404E631914E /* ParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
 		EB4791B41CBD85E200C04D13 /* GraphQL OS X Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphQL OS X Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB4791B61CBD85E200C04D13 /* GraphQL_OS_X_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQL_OS_X_Tests.swift; sourceTree = "<group>"; };
-		EB4791B81CBD85E200C04D13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB4791C31CBD85F400C04D13 /* GraphQL iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphQL iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB4791C51CBD85F400C04D13 /* GraphQL_iOS_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQL_iOS_Tests.swift; sourceTree = "<group>"; };
-		EB4791C71CBD85F400C04D13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB4791D21CBD8AF700C04D13 /* GraphQL tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphQL tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB4791D41CBD8AF700C04D13 /* GraphQL_tvOS_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQL_tvOS_Tests.swift; sourceTree = "<group>"; };
-		EB4791D61CBD8AF700C04D13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB86F19B1CBD810200021DCE /* GraphQL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphQL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB86F1A91CBD811D00021DCE /* GraphQL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphQL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB86F1B61CBD812C00021DCE /* GraphQL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphQL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB86F1C31CBD813B00021DCE /* GraphQL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphQL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB86F1D01CBD819D00021DCE /* graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = graphql.swift; path = Sources/graphql.swift; sourceTree = "<group>"; };
-		EB86F1D21CBD820E00021DCE /* Info-iOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-iOS.plist"; path = "Sources/Info-iOS.plist"; sourceTree = "<group>"; };
-		EB86F1D31CBD820E00021DCE /* Info-OSX.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-OSX.plist"; path = "Sources/Info-OSX.plist"; sourceTree = "<group>"; };
-		EB86F1D41CBD820E00021DCE /* Info-tvOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-tvOS.plist"; path = "Sources/Info-tvOS.plist"; sourceTree = "<group>"; };
-		EB86F1D51CBD820E00021DCE /* Info-watchOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-watchOS.plist"; path = "Sources/Info-watchOS.plist"; sourceTree = "<group>"; };
-		EB86F1DA1CBD82C400021DCE /* GraphQL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphQL.h; path = Sources/GraphQL.h; sourceTree = "<group>"; };
+		EBB78EA11CC9332400D366AB /* GraphQL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphQL.h; sourceTree = "<group>"; };
+		EBB78EA21CC9332400D366AB /* graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = graphql.swift; sourceTree = "<group>"; };
+		EBB78EA31CC9332400D366AB /* Info-iOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		EBB78EA41CC9332400D366AB /* Info-OSX.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-OSX.plist"; sourceTree = "<group>"; };
+		EBB78EA51CC9332400D366AB /* Info-tvOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
+		EBB78EA61CC9332400D366AB /* Info-watchOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-watchOS.plist"; sourceTree = "<group>"; };
+		EBB78EB31CCAAE2E00D366AB /* Info-iOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		EBB78EB41CCAAE2E00D366AB /* Info-OSX.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-OSX.plist"; sourceTree = "<group>"; };
+		EBB78EB51CCAAE2E00D366AB /* Info-tvOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,42 +149,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9FD5B2B252E7F777F61BE458 /* language */ = {
+			isa = PBXGroup;
+			children = (
+				9FD5BAF9AC8C6404E631914E /* ParserTests.swift */,
+				9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */,
+			);
+			path = language;
+			sourceTree = "<group>";
+		};
+		9FD5B82CBE7745EDB92D233A /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				EBB78EB31CCAAE2E00D366AB /* Info-iOS.plist */,
+				EBB78EB41CCAAE2E00D366AB /* Info-OSX.plist */,
+				EBB78EB51CCAAE2E00D366AB /* Info-tvOS.plist */,
+				9FD5B2B252E7F777F61BE458 /* language */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		9FD5B9734122131C8D20C00F /* language */ = {
+			isa = PBXGroup;
+			children = (
+				9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */,
+				9FD5B3BAC305189E35253A1C /* Lexer.swift */,
+				9FD5B4DE56C84A88027883C1 /* Ast.swift */,
+			);
+			path = language;
+			sourceTree = "<group>";
+		};
 		EB2B58791CBD80750007387E = {
 			isa = PBXGroup;
 			children = (
 				EB86F1CF1CBD819200021DCE /* Sources */,
-				EB4791B51CBD85E200C04D13 /* GraphQL OS X Tests */,
-				EB4791C41CBD85F400C04D13 /* GraphQL iOS Tests */,
-				EB4791D31CBD8AF700C04D13 /* GraphQL tvOS Tests */,
 				EB86F19C1CBD810200021DCE /* Products */,
+				9FD5B82CBE7745EDB92D233A /* Tests */,
 			);
-			sourceTree = "<group>";
-		};
-		EB4791B51CBD85E200C04D13 /* GraphQL OS X Tests */ = {
-			isa = PBXGroup;
-			children = (
-				EB4791B61CBD85E200C04D13 /* GraphQL_OS_X_Tests.swift */,
-				EB4791B81CBD85E200C04D13 /* Info.plist */,
-			);
-			path = "GraphQL OS X Tests";
-			sourceTree = "<group>";
-		};
-		EB4791C41CBD85F400C04D13 /* GraphQL iOS Tests */ = {
-			isa = PBXGroup;
-			children = (
-				EB4791C51CBD85F400C04D13 /* GraphQL_iOS_Tests.swift */,
-				EB4791C71CBD85F400C04D13 /* Info.plist */,
-			);
-			path = "GraphQL iOS Tests";
-			sourceTree = "<group>";
-		};
-		EB4791D31CBD8AF700C04D13 /* GraphQL tvOS Tests */ = {
-			isa = PBXGroup;
-			children = (
-				EB4791D41CBD8AF700C04D13 /* GraphQL_tvOS_Tests.swift */,
-				EB4791D61CBD8AF700C04D13 /* Info.plist */,
-			);
-			path = "GraphQL tvOS Tests";
 			sourceTree = "<group>";
 		};
 		EB86F19C1CBD810200021DCE /* Products */ = {
@@ -180,12 +205,13 @@
 		EB86F1CF1CBD819200021DCE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				EB86F1DA1CBD82C400021DCE /* GraphQL.h */,
-				EB86F1D21CBD820E00021DCE /* Info-iOS.plist */,
-				EB86F1D31CBD820E00021DCE /* Info-OSX.plist */,
-				EB86F1D41CBD820E00021DCE /* Info-tvOS.plist */,
-				EB86F1D51CBD820E00021DCE /* Info-watchOS.plist */,
-				EB86F1D01CBD819D00021DCE /* graphql.swift */,
+				EBB78EA11CC9332400D366AB /* GraphQL.h */,
+				EBB78EA21CC9332400D366AB /* graphql.swift */,
+				EBB78EA31CC9332400D366AB /* Info-iOS.plist */,
+				EBB78EA41CC9332400D366AB /* Info-OSX.plist */,
+				EBB78EA51CC9332400D366AB /* Info-tvOS.plist */,
+				EBB78EA61CC9332400D366AB /* Info-watchOS.plist */,
+				9FD5B9734122131C8D20C00F /* language */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -197,7 +223,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB86F1DB1CBD82C400021DCE /* GraphQL.h in Headers */,
+				EBB78EA71CC9332400D366AB /* GraphQL.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,7 +231,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB86F1DC1CBD82D500021DCE /* GraphQL.h in Headers */,
+				EBB78EB01CC9332D00D366AB /* GraphQL.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,7 +239,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB86F1DD1CBD82D500021DCE /* GraphQL.h in Headers */,
+				EBB78EB11CC9332D00D366AB /* GraphQL.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,7 +247,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB86F1DE1CBD82D600021DCE /* GraphQL.h in Headers */,
+				EBB78EB21CC9332E00D366AB /* GraphQL.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +461,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBB78EAB1CC9332400D366AB /* Info-tvOS.plist in Resources */,
+				EBB78EA91CC9332400D366AB /* Info-iOS.plist in Resources */,
+				EBB78EB81CCAAE2E00D366AB /* Info-tvOS.plist in Resources */,
+				EBB78EB61CCAAE2E00D366AB /* Info-iOS.plist in Resources */,
+				EBB78EAC1CC9332400D366AB /* Info-watchOS.plist in Resources */,
+				EBB78EAA1CC9332400D366AB /* Info-OSX.plist in Resources */,
+				EBB78EB71CCAAE2E00D366AB /* Info-OSX.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +499,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB4791B71CBD85E200C04D13 /* GraphQL_OS_X_Tests.swift in Sources */,
+				9FD5B7B84A03277E87DD5FCB /* ParserTests.swift in Sources */,
+				9FD5B07E2C696751E4AF616B /* LexerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +508,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB4791C61CBD85F400C04D13 /* GraphQL_iOS_Tests.swift in Sources */,
+				9FD5B3A79EE79B7FB88E1DD4 /* ParserTests.swift in Sources */,
+				9FD5BF64173E8E065DACFB35 /* LexerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,7 +517,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB4791D51CBD8AF700C04D13 /* GraphQL_tvOS_Tests.swift in Sources */,
+				9FD5B37A2B64F8AADA46B21A /* ParserTests.swift in Sources */,
+				9FD5B13F5F720BF712D0FB46 /* LexerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,7 +526,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB86F1D11CBD819D00021DCE /* graphql.swift in Sources */,
+				EBB78EA81CC9332400D366AB /* graphql.swift in Sources */,
+				9FD5BE26AE0249521238FE71 /* Parser.swift in Sources */,
+				9FD5B9A8224465ADFD354677 /* Lexer.swift in Sources */,
+				9FD5BFBFE7F98A235568BECF /* Ast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,7 +537,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB86F1DF1CBD830500021DCE /* graphql.swift in Sources */,
+				EBB78EAD1CC9332800D366AB /* graphql.swift in Sources */,
+				9FD5B92A3A3E3CD0525EC946 /* Parser.swift in Sources */,
+				9FD5B522488732CCBB06461B /* Lexer.swift in Sources */,
+				9FD5BA6284D3000CA76C1A9A /* Ast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,7 +548,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB86F1E01CBD830500021DCE /* graphql.swift in Sources */,
+				EBB78EAE1CC9332900D366AB /* graphql.swift in Sources */,
+				9FD5B752A4093BEB3C8DFF5D /* Parser.swift in Sources */,
+				9FD5BA42DC5B3035134F07A6 /* Lexer.swift in Sources */,
+				9FD5BC88E8CFBFB1787AAB32 /* Ast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,7 +559,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB86F1E11CBD830600021DCE /* graphql.swift in Sources */,
+				EBB78EAF1CC9332900D366AB /* graphql.swift in Sources */,
+				9FD5B1752AFD5F5AF4AFF778 /* Parser.swift in Sources */,
+				9FD5BD28B4AE136B2BAA2834 /* Lexer.swift in Sources */,
+				9FD5B6B45CE0AF6F23683331 /* Ast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,7 +645,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "GraphQL OS X Tests/Info.plist";
+				INFOPLIST_FILE = "Tests/Info-OSX.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -641,7 +689,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "GraphQL OS X Tests/Info.plist";
+				INFOPLIST_FILE = "Tests/Info-OSX.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -688,7 +736,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "GraphQL iOS Tests/Info.plist";
+				INFOPLIST_FILE = "Tests/Info-iOS.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -731,7 +779,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "GraphQL iOS Tests/Info.plist";
+				INFOPLIST_FILE = "Tests/Info-iOS.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -778,7 +826,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "GraphQL tvOS Tests/Info.plist";
+				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -820,7 +868,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "GraphQL tvOS Tests/Info.plist";
+				INFOPLIST_FILE = "Tests/Info-tvOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.garriguv.GraphQL-tvOS-Tests";
@@ -1221,6 +1269,7 @@
 				PRODUCT_NAME = GraphQL;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1275,6 +1324,7 @@
 				PRODUCT_NAME = GraphQL;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
