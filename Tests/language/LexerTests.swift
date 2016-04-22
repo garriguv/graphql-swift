@@ -184,6 +184,38 @@ class LexerTests: XCTestCase {
     checkTokenKindAndValue(firstToken("-1.23E-4"), kind: .Float, value: "-1.23E-4")
   }
 
+  func testNumberZeroError() {
+    checkSyntaxError("00", expectedMessage: "Invalid number, unexpected digit after 0: (0).")
+  }
+
+  func testNumberPlusError() {
+    checkSyntaxError("+1", expectedMessage: "Unexpected character: (+).")
+  }
+
+  func testNumberInvalidDotNotationError0() {
+    checkSyntaxError("123.", expectedMessage: "Invalid number, expected digit but got: (\\u{FFFD}).")
+  }
+
+  func testNumberInvalidDotNotationError1() {
+    checkSyntaxError(".123", expectedMessage: "Unexpected character: (.).")
+  }
+
+  func testNumberInvalidDotNotationError2() {
+    checkSyntaxError("1.A", expectedMessage: "Invalid number, expected digit but got: (A).")
+  }
+
+  func testNumberInvalidNegativeError() {
+    checkSyntaxError("-A", expectedMessage: "Invalid number, expected digit but got: (A).")
+  }
+
+  func testNumberInvalidExponentError0() {
+    checkSyntaxError("1.0e", expectedMessage: "Invalid number, expected digit but got: (\\u{FFFD}).")
+  }
+
+  func testNumberInvalidExponentError1() {
+    checkSyntaxError("1.0eA", expectedMessage: "Invalid number, expected digit but got: (A).")
+  }
+
   func testLexesBang() {
     checkTokenKindAndValue(firstToken("!"), kind: .Bang, value: nil)
   }
@@ -242,9 +274,11 @@ class LexerTests: XCTestCase {
 
     let firstToken = try! sut.next()
     let secondToken = try! sut.next()
+    let thirdToken = try! sut.next()
 
     checkTokenKindAndValue(firstToken, kind: .Spread, value: nil)
     checkTokenKindAndValue(secondToken, kind: .Int, value: "123")
+    checkTokenKindAndValue(thirdToken, kind: .EOF, value: nil)
   }
 
 }

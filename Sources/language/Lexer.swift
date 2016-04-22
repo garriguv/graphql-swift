@@ -41,11 +41,15 @@ extension Lexer {
   private func readToken() throws -> Token {
     skipWhitespace()
 
+    if (position >= source.endIndex) {
+      return Token(kind: .EOF, start: source.endIndex, end: source.endIndex, value: nil)
+    }
+
     let scalar = source[position]
     let code = scalar.value
 
     if (code < 0x0020 && code != 0x0009 && code != 0x000A && code != 0x000D) {
-      throw LexerError.SyntaxError(source, position, "Invalid character \(code)")
+      throw LexerError.SyntaxError(source, position, "Invalid character: (\(code))")
     }
 
     switch code {
@@ -101,9 +105,9 @@ extension Lexer {
       position = position.successor()
       return Token(kind: .BraceR, start: position.predecessor(), end: position, value: nil)
     default:
-      throw LexerError.SyntaxError(source, position, "Unexpected character : \(scalar).")
+      throw LexerError.SyntaxError(source, position, "Unexpected character: (\(scalar)).")
     }
-    throw LexerError.SyntaxError(source, position, "Unexpected character : \(scalar).")
+    throw LexerError.SyntaxError(source, position, "Unexpected character: (\(scalar)).")
   }
 
   private func readName() throws -> Token {
@@ -206,7 +210,7 @@ extension Lexer {
       position = position.successor()
       code = source[position].value
       if (code >= 48 && code <= 57) {
-        throw LexerError.SyntaxError(source, position.successor(), "Invalid number, unexpected digit after 0: \(source[position.successor()])")
+        throw LexerError.SyntaxError(source, position.successor(), "Invalid number, unexpected digit after 0: (\(source[position])).")
       }
     } else {
       try readDigits()
@@ -243,7 +247,7 @@ extension Lexer {
         code = source[position].value
       } while (position < source.endIndex && code >= 48 && code <= 57)
     } else {
-      throw LexerError.SyntaxError(source, position, "Invalid number, expected digit but got: \(source[position])")
+      throw LexerError.SyntaxError(source, position, "Invalid number, expected digit but got: (\(source[position].escape(asASCII: true))).")
     }
   }
 
