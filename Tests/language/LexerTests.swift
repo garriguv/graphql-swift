@@ -268,6 +268,36 @@ class LexerTests: XCTestCase {
     checkTokenKindAndValue(firstToken("|"), kind: .Pipe, value: nil)
   }
 
+  func testUnexpectedCharacterError0() {
+    checkSyntaxError("?", expectedMessage: "Unexpected character: (?).")
+  }
+
+  func testUnexpectedCharacterError1() {
+    checkSyntaxError("..", expectedMessage: "Unexpected character: (.).")
+  }
+
+  func testUnexpectedCharacterError2() {
+    checkSyntaxError("\u{203B}", expectedMessage: "Unexpected character: (\\u{203B}).")
+  }
+
+  func testUnexpectedCharacterError3() {
+    checkSyntaxError("\u{200b}", expectedMessage: "Unexpected character: (\\u{200B}).")
+  }
+
+  func testDashesInNames() {
+    let source = "a-b"
+    let sut = Lexer(source: source)
+
+    checkTokenKindAndValue(try! sut.next(), kind: .Name, value: "a")
+
+    do {
+      let _ = try sut.next()
+    } catch LexerError.SyntaxError(_, _, let message) {
+      XCTAssertEqual(message, "Invalid number, expected digit but got: (b).")
+    } catch {
+    }
+  }
+
   func testLexesSpreadDigit() {
     let source = "... 123"
     let sut = Lexer(source: source)

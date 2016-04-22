@@ -105,9 +105,9 @@ extension Lexer {
       position = position.successor()
       return Token(kind: .BraceR, start: position.predecessor(), end: position, value: nil)
     default:
-      throw LexerError.SyntaxError(source, position, "Unexpected character: (\(scalar)).")
+      throw LexerError.SyntaxError(source, position, "Unexpected character: (\(scalar.escape(asASCII: true))).")
     }
-    throw LexerError.SyntaxError(source, position, "Unexpected character: (\(scalar)).")
+    throw LexerError.SyntaxError(source, position, "Unexpected character: (\(scalar.escape(asASCII: true))).")
   }
 
   private func readName() throws -> Token {
