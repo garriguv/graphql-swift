@@ -143,6 +143,10 @@ extension Lexer {
         break
       }
 
+      if (code < 0x0020 && code != 0x0009) {
+        throw LexerError.SyntaxError(source, position, "Invalid character within String: (\(source[position].escape(asASCII: true))).")
+      }
+
       position = position.successor()
       if (code == 92) {  // \\
         value += String(source[chunkStart..<position.predecessor()])
@@ -163,14 +167,10 @@ extension Lexer {
         case 117: // \u
           value.append(try unicodeCharacter())
         default:
-          throw LexerError.SyntaxError(source, position, "Invalid escape sequence: \(source[position]).")
+          throw LexerError.SyntaxError(source, position, "Invalid escape sequence: (\\\(String(source[position]))).")
         }
         position = position.successor()
         chunkStart = position
-      }
-
-      if (code < 0x0020 && code != 0x0009) {
-        throw LexerError.SyntaxError(source, position, "Invalid character within String: \(source[position]).")
       }
     }
 
@@ -185,7 +185,9 @@ extension Lexer {
   private func unicodeCharacter() throws -> UnicodeScalar {
     position = position.successor()
     let substring = String(source[position...position.successor().successor().successor()])
-    let unicodeCode = UInt32(strtoul(substring, nil, 16))
+    guard let unicodeCode = UInt32(substring, radix: 16) else {
+      throw LexerError.SyntaxError(source, position, "Invalid escape sequence: (\\u\(substring)).")
+    }
     position = position.successor().successor().successor()
     return UnicodeScalar(unicodeCode)
   }
