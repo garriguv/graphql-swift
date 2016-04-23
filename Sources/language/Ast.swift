@@ -4,100 +4,17 @@ public struct Document {
   let definitions: [Definition]
 }
 
-public enum Definition {
-  case Operation(OperationDefinition)
-  case Fragment(FragmentDefinition)
-}
-
-public enum OperationType {
-  case query, mutation
-}
-
-public struct OperationDefinition {
-  let type: OperationType
-  let name: String?
-  let variableDefinitions: [VariableDefinition]
-  let directives: [Directive]
-  let selectionSet: SelectionSet
-}
-
-public struct SelectionSet {
-  let selections: [Selection]
-}
-
-public struct FragmentDefinition {
-  let name: String
-  let typeCondition: Type
-  let directives: [Directive]
-  let selectionSet: SelectionSet
-}
-
-public struct Directive {
-  let name: String
-  let arguments: [Argument]
-}
-
-public enum Selection {
-  case FieldSelection(Field)
-  case FragmentSpreadSelection(FragmentSpread)
-  case InlineFragmentSelection(InlineFragment)
-}
-
-public struct Field {
-  let alias: String?
-  let name: String
-  let arguments: [Argument]
-  let directives: [Directive]
-  let selectionSet: SelectionSet?
-}
-
-public struct FragmentSpread {
-  let name: String
-  let directives: [Directive]
-}
-
-public struct InlineFragment {
-  let typeCondition: Type
-  let directives: [Directive]
-  let selectionSet: SelectionSet
-}
-
-public struct Argument {
-  let name: String
-  let value: Value
-}
-
-public indirect enum Value {
-  case IntValue(Int)
-  case FloatValue(Float)
-  case StringValue(String)
-  case BoolValue(Bool)
-  case Enum(String)
-  case List([Value])
-  case Object([ObjectField])
-}
-
-public struct ObjectField {
-  let name: String
-  let value: Value
-}
-
-public indirect enum Type {
-  case Named(String)
-  case List([Type])
-  case NonNull(Type)
-}
-
-public struct VariableDefinition {
-  let name: String
-  let type: Type
-  let defaultValue: Value?
-}
-
 extension Document: Equatable {}
 
 public func == (lhs: Document, rhs: Document) -> Bool {
   return lhs.definitions == rhs.definitions
+}
+
+public enum Definition {
+  case Operation(OperationDefinition)
+  case Fragment(FragmentDefinition)
+  case Type(TypeDefinition)
+  case TypeExtension(TypeExtensionDefinition)
 }
 
 extension Definition: Equatable {}
@@ -108,19 +25,41 @@ public func == (lhs: Definition, rhs: Definition) -> Bool {
     return lhsOperation == rhsOperation
   case (.Fragment(let lhsFragment), .Fragment(let rhsFragment)):
     return lhsFragment == rhsFragment
+  case (.Type(let lhsType), .Type(let rhsType)):
+    return lhsType == rhsType
+  case (.TypeExtension(let lhsTypeExtension), .TypeExtension(let rhsTypeExtension)):
+    return lhsTypeExtension == rhsTypeExtension
   default:
     return false
   }
 }
 
-extension OperationDefinition: Equatable {}
+public struct VariableDefinition {
+  let variable: Variable
+  let type: Type
+  let defaultValue: Value?
+}
 
-public func == (lhs: OperationDefinition, rhs: OperationDefinition) -> Bool {
-  return lhs.type == rhs.type &&
-    lhs.name == rhs.name &&
-    lhs.variableDefinitions == rhs.variableDefinitions &&
-    lhs.directives == rhs.directives &&
-    lhs.selectionSet == rhs.selectionSet
+extension VariableDefinition: Equatable {}
+
+public func == (lhs: VariableDefinition, rhs: VariableDefinition) -> Bool {
+  return lhs.variable == rhs.variable &&
+    lhs.type == rhs.type &&
+    lhs.defaultValue == rhs.defaultValue
+}
+
+public struct Variable {
+  let name: Name
+}
+
+extension Variable: Equatable {}
+
+public func == (lhs: Variable, rhs: Variable) -> Bool {
+  return lhs.name == rhs.name
+}
+
+public struct SelectionSet {
+  let selections: [Selection]
 }
 
 extension SelectionSet: Equatable {}
@@ -129,20 +68,10 @@ public func == (lhs: SelectionSet, rhs: SelectionSet) -> Bool {
   return lhs.selections == rhs.selections
 }
 
-extension FragmentDefinition: Equatable {}
-
-public func == (lhs: FragmentDefinition, rhs: FragmentDefinition) -> Bool {
-  return lhs.name == rhs.name &&
-    lhs.typeCondition == rhs.typeCondition &&
-    lhs.directives == rhs.directives &&
-    lhs.selectionSet == rhs.selectionSet
-}
-
-extension Directive: Equatable {}
-
-public func == (lhs: Directive, rhs: Directive) -> Bool {
-  return lhs.name == rhs.name &&
-    lhs.arguments == rhs.arguments
+public enum Selection {
+  case FieldSelection(Field)
+  case FragmentSpreadSelection(FragmentSpread)
+  case InlineFragmentSelection(InlineFragment)
 }
 
 extension Selection: Equatable {}
@@ -160,14 +89,9 @@ public func == (lhs: Selection, rhs: Selection) -> Bool {
   }
 }
 
-extension Field: Equatable {}
-
-public func == (lhs: Field, rhs: Field) -> Bool {
-  return lhs.alias == rhs.alias &&
-    lhs.name == rhs.name &&
-    lhs.arguments == rhs.arguments &&
-    lhs.directives == rhs.directives &&
-    lhs.selectionSet == rhs.selectionSet
+public struct FragmentSpread {
+  let name: Name
+  let directives: [Directive]
 }
 
 extension FragmentSpread: Equatable {}
@@ -175,6 +99,12 @@ extension FragmentSpread: Equatable {}
 public func == (lhs: FragmentSpread, rhs: FragmentSpread) -> Bool {
   return lhs.name == rhs.name &&
     lhs.directives == rhs.directives
+}
+
+public struct InlineFragment {
+  let typeCondition: Type?
+  let directives: [Directive]
+  let selectionSet: SelectionSet
 }
 
 extension InlineFragment: Equatable {}
@@ -185,17 +115,39 @@ public func == (lhs: InlineFragment, rhs: InlineFragment) -> Bool {
     lhs.selectionSet == rhs.selectionSet
 }
 
-extension Argument: Equatable {}
+public struct FragmentDefinition {
+  let name: Name
+  let typeCondition: Type
+  let directives: [Directive]
+  let selectionSet: SelectionSet
+}
 
-public func == (lhs: Argument, rhs: Argument) -> Bool {
+extension FragmentDefinition: Equatable {}
+
+public func == (lhs: FragmentDefinition, rhs: FragmentDefinition) -> Bool {
   return lhs.name == rhs.name &&
-    lhs.value == rhs.value
+    lhs.typeCondition == rhs.typeCondition &&
+    lhs.directives == rhs.directives &&
+    lhs.selectionSet == rhs.selectionSet
+}
+
+public indirect enum Value {
+  case VariableValue(Variable)
+  case IntValue(Int)
+  case FloatValue(Float)
+  case StringValue(String)
+  case BoolValue(Bool)
+  case Enum(String)
+  case List([Value])
+  case Object([ObjectField])
 }
 
 extension Value: Equatable {}
 
 public func == (lhs: Value, rhs: Value) -> Bool {
   switch (lhs, rhs) {
+  case (.VariableValue(let lhsValue), .VariableValue(let rhsValue)):
+    return lhsValue == rhsValue
   case (.IntValue(let lhsValue), .IntValue(let rhsValue)):
     return lhsValue == rhsValue
   case (.FloatValue(let lhsValue), .FloatValue(let rhsValue)):
@@ -215,11 +167,34 @@ public func == (lhs: Value, rhs: Value) -> Bool {
   }
 }
 
+public struct ObjectField {
+  let name: Name
+  let value: Value
+}
+
 extension ObjectField: Equatable {}
 
 public func == (lhs: ObjectField, rhs: ObjectField) -> Bool {
   return lhs.name == rhs.name &&
     lhs.value == rhs.value
+}
+
+public struct Directive {
+  let name: Name
+  let arguments: [Argument]
+}
+
+extension Directive: Equatable {}
+
+public func == (lhs: Directive, rhs: Directive) -> Bool {
+  return lhs.name == rhs.name &&
+    lhs.arguments == rhs.arguments
+}
+
+public indirect enum Type {
+  case Named(Name)
+  case List(Type)
+  case NonNull(Type)
 }
 
 extension Type: Equatable {}
@@ -237,11 +212,215 @@ public func == (lhs: Type, rhs: Type) -> Bool {
   }
 }
 
-extension VariableDefinition: Equatable {}
+public struct Argument {
+  let name: Name
+  let value: Value
+}
 
-public func == (lhs: VariableDefinition, rhs: VariableDefinition) -> Bool {
+extension Argument: Equatable {}
+
+public func == (lhs: Argument, rhs: Argument) -> Bool {
+  return lhs.name == rhs.name &&
+    lhs.value == rhs.value
+}
+
+public enum OperationType: String {
+  case query, mutation, subscription
+}
+
+public struct OperationDefinition {
+  let type: OperationType
+  let name: Name?
+  let variableDefinitions: [VariableDefinition]
+  let directives: [Directive]
+  let selectionSet: SelectionSet
+}
+
+extension OperationDefinition: Equatable {}
+
+public func == (lhs: OperationDefinition, rhs: OperationDefinition) -> Bool {
+  return lhs.type == rhs.type &&
+    lhs.name == rhs.name &&
+    lhs.variableDefinitions == rhs.variableDefinitions &&
+    lhs.directives == rhs.directives &&
+    lhs.selectionSet == rhs.selectionSet
+}
+
+public struct Name {
+  let value: String?
+}
+
+extension Name: Equatable {}
+
+public func == (lhs: Name, rhs: Name) -> Bool {
+  return lhs.value == rhs.value
+}
+
+
+public struct Field {
+  let alias: Name?
+  let name: Name
+  let arguments: [Argument]
+  let directives: [Directive]
+  let selectionSet: SelectionSet?
+}
+
+extension Field: Equatable {}
+
+public func == (lhs: Field, rhs: Field) -> Bool {
+  return lhs.alias == rhs.alias &&
+    lhs.name == rhs.name &&
+    lhs.arguments == rhs.arguments &&
+    lhs.directives == rhs.directives &&
+    lhs.selectionSet == rhs.selectionSet
+}
+
+public enum TypeDefinition {
+  case Object(ObjectTypeDefinition)
+  case Interface(InterfaceTypeDefinition)
+  case Union(UnionTypeDefinition)
+  case Scalar(ScalarTypeDefinition)
+  case Enum(EnumTypeDefinition)
+  case InputObject(InputObjectTypeDefinition)
+}
+
+extension TypeDefinition: Equatable {}
+
+public func == (lhs: TypeDefinition, rhs: TypeDefinition) -> Bool {
+  switch (lhs, rhs) {
+  case (.Object(let rhsObject), .Object(let lhsObject)):
+    return rhsObject == lhsObject
+  case (.Interface(let rhsInterface), .Interface(let lhsInterface)):
+    return rhsInterface == lhsInterface
+  case (.Union(let rhsUnion), .Union(let lhsUnion)):
+    return rhsUnion == lhsUnion
+  case (.Scalar(let rhsScalar), .Scalar(let lhsScalar)):
+    return rhsScalar == lhsScalar
+  case (.Enum(let rhsEnum), .Enum(let lhsEnum)):
+    return rhsEnum == lhsEnum
+  case (.InputObject(let rhsInputObject), .InputObject(let lhsInputObject)):
+    return rhsInputObject == lhsInputObject
+  default:
+    return false
+  }
+}
+
+public struct ObjectTypeDefinition {
+  let name: Name
+  let interfaces: [Type]
+  let fields: [FieldDefinition]
+}
+
+extension ObjectTypeDefinition: Equatable {}
+
+public func == (lhs: ObjectTypeDefinition, rhs: ObjectTypeDefinition) -> Bool {
+  return lhs.name == rhs.name &&
+    lhs.interfaces == rhs.interfaces &&
+    lhs.fields == rhs.fields
+}
+
+public struct FieldDefinition {
+  let name: Name
+  let arguments: [InputValueDefinition]
+  let type: Type
+}
+
+extension FieldDefinition: Equatable {}
+
+public func == (lhs: FieldDefinition, rhs: FieldDefinition) -> Bool {
+  return lhs.name == rhs.name &&
+    lhs.arguments == rhs.arguments &&
+    lhs.type == rhs.type
+}
+
+public struct InputValueDefinition {
+  let name: Name
+  let type: Type
+  let defaultValue: Value?
+}
+
+extension InputValueDefinition: Equatable {}
+
+public func == (lhs: InputValueDefinition, rhs: InputValueDefinition) -> Bool {
   return lhs.name == rhs.name &&
     lhs.type == rhs.type &&
     lhs.defaultValue == rhs.defaultValue
 }
 
+public struct InterfaceTypeDefinition {
+  let name: Name
+  let fields: [FieldDefinition]
+}
+
+extension InterfaceTypeDefinition: Equatable {}
+
+public func == (lhs: InterfaceTypeDefinition, rhs: InterfaceTypeDefinition) -> Bool {
+  return lhs.name == rhs.name &&
+    lhs.fields == rhs.fields
+}
+
+public struct UnionTypeDefinition {
+  let name: Name
+  let types: [Type]
+}
+
+extension UnionTypeDefinition: Equatable {}
+
+public func == (lhs: UnionTypeDefinition, rhs: UnionTypeDefinition) -> Bool {
+  return lhs.name == rhs.name &&
+    lhs.types == rhs.types
+}
+
+public struct ScalarTypeDefinition {
+  let name: Name
+}
+
+extension ScalarTypeDefinition: Equatable {}
+
+public func == (lhs: ScalarTypeDefinition, rhs: ScalarTypeDefinition) -> Bool {
+  return lhs.name == rhs.name
+}
+
+public struct EnumTypeDefinition {
+  let name: Name
+  let values: [EnumValueDefinition]
+}
+
+extension EnumTypeDefinition: Equatable {}
+
+public func == (lhs: EnumTypeDefinition, rhs: EnumTypeDefinition) -> Bool {
+  return lhs.name == rhs.name &&
+    lhs.values == rhs.values
+}
+
+public struct EnumValueDefinition {
+  let name: Name
+}
+
+extension  EnumValueDefinition: Equatable {}
+
+public func == (lhs: EnumValueDefinition, rhs: EnumValueDefinition) -> Bool {
+  return lhs.name == rhs.name
+}
+
+public struct InputObjectTypeDefinition {
+  let name: Name
+  let fields: [InputValueDefinition]
+}
+
+extension InputObjectTypeDefinition: Equatable {}
+
+public func == (lhs: InputObjectTypeDefinition, rhs: InputObjectTypeDefinition) -> Bool {
+  return lhs.name == rhs.name &&
+    lhs.fields == rhs.fields
+}
+
+public struct TypeExtensionDefinition {
+  let definition: ObjectTypeDefinition
+}
+
+extension TypeExtensionDefinition: Equatable {}
+
+public func == (lhs: TypeExtensionDefinition, rhs: TypeExtensionDefinition) -> Bool {
+  return lhs.definition == rhs.definition
+}
