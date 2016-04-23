@@ -22,8 +22,8 @@ enum LexerError: ErrorType {
 }
 
 public class Lexer {
-  let source: String.UnicodeScalarView
-  var position: String.UnicodeScalarView.Index
+  private let source: String.UnicodeScalarView
+  private var position: String.UnicodeScalarView.Index
 
   init(source: String) {
     self.source = source.unicodeScalars
