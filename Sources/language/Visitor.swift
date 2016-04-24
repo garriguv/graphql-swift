@@ -1,9 +1,22 @@
 import Foundation
 
-public typealias VisitorFunction = (Node) -> ()
+public enum VisitorBehavior {
+  case Continue
+  case SkipNode
+}
+
+public typealias VisitorFunction = (Node) -> (VisitorBehavior)
 
 public func visit(node: Node, enter: VisitorFunction, leave: VisitorFunction) {
-  enter(node)
+  let behavior = enter(node)
+
+  defer {
+    leave(node)
+  }
+
+  if (behavior == .SkipNode) {
+    return
+  }
 
   switch node {
   case let document as Document:
@@ -142,6 +155,4 @@ public func visit(node: Node, enter: VisitorFunction, leave: VisitorFunction) {
   default:
     break
   }
-
-  leave(node)
 }

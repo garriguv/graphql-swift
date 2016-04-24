@@ -4,9 +4,54 @@ import XCTest
 
 class VisitorTests: XCTestCase {
 
+  func testAllowsSkippingSubtree() {
+    let ast = try! Parser(source: "{ a, b { x }, c }").parse()
+    var array: [String] = []
+
+    visit(ast, enter: { node in
+      array.append("enter \(node.dynamicType)")
+      switch node {
+      case let field as Field where field.name.value == "b":
+        return .SkipNode
+      default:
+        return .Continue
+      }
+    }, leave: { node in
+      array.append("leave \(node.dynamicType)")
+      return .Continue
+    })
+
+    XCTAssertEqual(array, [
+      "enter Document",
+      "enter Definition",
+      "enter OperationDefinition",
+      "enter SelectionSet",
+      "enter Selection",
+      "enter Field",
+      "enter Name",
+      "leave Name",
+      "leave Field",
+      "leave Selection",
+      "enter Selection",
+      "enter Field",
+      "leave Field",
+      "leave Selection",
+      "enter Selection",
+      "enter Field",
+      "enter Name",
+      "leave Name",
+      "leave Field",
+      "leave Selection",
+      "leave SelectionSet",
+      "leave OperationDefinition",
+      "leave Definition",
+      "leave Document"])
+  }
+
   func testVisitsKitchenSink() {
     let ast = try! Parser(source: graphQlQuery("kitchen_sink")).parse()
 
+    var array: [String] = []
     func visitorFn(marker: String) -> VisitorFunction {
       return {
         (node: Node) in
@@ -26,6 +71,7 @@ class VisitorTests: XCTestCase {
         default:
           array.append("\(marker) \(node.dynamicType)")
         }
+        return .Continue
       }
     }
 
