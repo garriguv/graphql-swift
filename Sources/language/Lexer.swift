@@ -18,7 +18,13 @@ public func == (lhs: Token, rhs: Token) -> Bool {
 }
 
 enum LexerError: ErrorType {
-  case SyntaxError(String.UnicodeScalarView, String.UnicodeScalarView.Index, String)
+  case UnexpectedCharacter(String.UnicodeScalarView.Index, Character)
+  case InvalidCharacter(String.UnicodeScalarView.Index, Character)
+  case InvalidCharacterWithinString(String.UnicodeScalarView.Index, Character)
+  case InvalidEscapeSequence(String.UnicodeScalarView.Index, String)
+  case UnterminatedString(String.UnicodeScalarView.Index)
+  case UnexpectedCharacterInNumberAfterZero(String.UnicodeScalarView.Index, Character)
+  case UnexpectedCharacterInNumber(String.UnicodeScalarView.Index, Character)
 }
 
 public class Lexer {
@@ -49,7 +55,7 @@ extension Lexer {
     let code = scalar.value
 
     if (code < 0x0020 && code != 0x0009 && code != 0x000A && code != 0x000D) {
-      throw LexerError.SyntaxError(source, position, "Invalid character: (\(code))")
+      throw LexerError.InvalidCharacter(position, Character(source[position]))
     }
 
     switch code {
@@ -105,9 +111,9 @@ extension Lexer {
       position = position.successor()
       return Token(kind: .BraceR, start: position.predecessor(), end: position, value: nil)
     default:
-      throw LexerError.SyntaxError(source, position, "Unexpected character: (\(scalar.escape(asASCII: true))).")
+      throw LexerError.UnexpectedCharacter(position, Character(scalar))
     }
-    throw LexerError.SyntaxError(source, position, "Unexpected character: (\(scalar.escape(asASCII: true))).")
+    throw LexerError.UnexpectedCharacter(position, Character(scalar))
   }
 
   private func readName() throws -> Token {
@@ -148,7 +154,7 @@ extension Lexer {
       }
 
       if (code < 0x0020 && code != 0x0009) {
-        throw LexerError.SyntaxError(source, position, "Invalid character within String: (\(source[position].escape(asASCII: true))).")
+        throw LexerError.InvalidCharacterWithinString(position, Character(source[position]))
       }
 
       position = position.successor()
@@ -171,7 +177,7 @@ extension Lexer {
         case 117: // \u
           value.append(try unicodeCharacter())
         default:
-          throw LexerError.SyntaxError(source, position, "Invalid escape sequence: (\\\(String(source[position]))).")
+          throw LexerError.InvalidEscapeSequence(position, "\\\(source[position].escape(asASCII: true))")
         }
         position = position.successor()
         chunkStart = position
@@ -179,7 +185,7 @@ extension Lexer {
     }
 
     if (source[position].value != 34) {
-      throw LexerError.SyntaxError(source, position, "Unterminated string.")
+      throw LexerError.UnterminatedString(position)
     }
 
     value.appendContentsOf(String(source[chunkStart..<position]))
@@ -191,7 +197,7 @@ extension Lexer {
     position = position.successor()
     let substring = String(source[position...position.successor().successor().successor()])
     guard let unicodeCode = UInt32(substring, radix: 16) else {
-      throw LexerError.SyntaxError(source, position, "Invalid escape sequence: (\\u\(substring)).")
+      throw LexerError.InvalidEscapeSequence(position, "\\u\(substring)")
     }
     position = position.successor().successor().successor()
     return UnicodeScalar(unicodeCode)
@@ -211,7 +217,7 @@ extension Lexer {
       position = position.successor()
       code = source[position].value
       if (code >= 48 && code <= 57) {
-        throw LexerError.SyntaxError(source, position.successor(), "Invalid number, unexpected digit after 0: (\(source[position])).")
+        throw LexerError.UnexpectedCharacterInNumberAfterZero(position, Character(source[position]))
       }
     } else {
       try readDigits()
@@ -248,7 +254,7 @@ extension Lexer {
         code = source[position].value
       } while (position < source.endIndex && code >= 48 && code <= 57)
     } else {
-      throw LexerError.SyntaxError(source, position, "Invalid number, expected digit but got: (\(source[position].escape(asASCII: true))).")
+      throw LexerError.UnexpectedCharacterInNumber(position, Character(source[position]))
     }
   }
 

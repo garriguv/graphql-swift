@@ -3,6 +3,7 @@ import XCTest
 @testable import GraphQL
 
 class LexerTests: XCTestCase {
+  private let _idx = "".unicodeScalars.startIndex
 
   func testAcceptsBOMHeader() {
     checkTokenKindAndValue(firstToken("\u{FEFF} foo"), kind: .Name, value: "foo")
@@ -58,55 +59,55 @@ class LexerTests: XCTestCase {
   }
 
   func testUnterminatedShortStringError() {
-    checkSyntaxError("\"", expectedMessage: "Unterminated string.")
+    checkError("\"", expectedError: .UnterminatedString(_idx))
   }
 
   func testUnterminatedLongStringError() {
-    checkSyntaxError("\"not terminated", expectedMessage: "Unterminated string.")
+    checkError("\"not terminated", expectedError: .UnterminatedString(_idx))
   }
 
   func testUnescapedControlCharError() {
-    checkSyntaxError("\"unescaped \u{0007} control char\"", expectedMessage: "Invalid character within String: (\\u{07}).")
+    checkError("\"unescaped \u{0007} control char\"", expectedError: .InvalidCharacterWithinString(_idx, Character(UnicodeScalar(0x07))))
   }
 
   func testNullByteInTheMiddleOfStringError() {
-    checkSyntaxError("\"null byte \u{0000} not at end of file\"", expectedMessage: "Invalid character within String: (\\0).")
+    checkError("\"null byte \u{0000} not at end of file\"", expectedError: .InvalidCharacterWithinString(_idx, Character(UnicodeScalar(0x0))))
   }
 
   func testMultilineStringError0() {
-    checkSyntaxError("\"multi\nline\"", expectedMessage: "Unterminated string.")
+    checkError("\"multi\nline\"", expectedError: .UnterminatedString(_idx))
   }
 
   func testMultilineStringError1() {
-    checkSyntaxError("\"multi\rline\"", expectedMessage: "Unterminated string.")
+    checkError("\"multi\rline\"", expectedError: .UnterminatedString(_idx))
   }
 
   func testBadEscapeError0() {
-    checkSyntaxError("\"bad \\z esc\"", expectedMessage: "Invalid escape sequence: (\\z).")
+    checkError("\"bad \\z esc\"", expectedError: .InvalidEscapeSequence(_idx, "\\z"))
   }
 
   func testBadEscapeError1() {
-    checkSyntaxError("\"bad \\x esc\"", expectedMessage: "Invalid escape sequence: (\\x).")
+    checkError("\"bad \\x esc\"", expectedError: .InvalidEscapeSequence(_idx, "\\x"))
   }
 
   func testBadUnicodeEscapeError() {
-    checkSyntaxError("\"bad \\u1 esc\"", expectedMessage: "Invalid escape sequence: (\\u1 es).")
+    checkError("\"bad \\u1 esc\"", expectedError: .InvalidEscapeSequence(_idx, "\\u1 es"))
   }
 
   func testBadUnicodeEscapeError1() {
-    checkSyntaxError("\"bad \\u0XX1 esc\"", expectedMessage: "Invalid escape sequence: (\\u0XX1).")
+    checkError("\"bad \\u0XX1 esc\"", expectedError: .InvalidEscapeSequence(_idx, "\\u0XX1"))
   }
 
   func testBadUnicodeEscapeError2() {
-    checkSyntaxError("\"bad \\uXXXX esc\"", expectedMessage: "Invalid escape sequence: (\\uXXXX).")
+    checkError("\"bad \\uXXXX esc\"", expectedError: .InvalidEscapeSequence(_idx, "\\uXXXX"))
   }
 
   func testBadUnicodeEscapeError3() {
-    checkSyntaxError("\"bad \\uFXXX esc\"", expectedMessage: "Invalid escape sequence: (\\uFXXX).")
+    checkError("\"bad \\uFXXX esc\"", expectedError: .InvalidEscapeSequence(_idx, "\\uFXXX"))
   }
 
   func testBadUnicodeEscapeError4() {
-    checkSyntaxError("\"bad \\uXXXF esc\"", expectedMessage: "Invalid escape sequence: (\\uXXXF).")
+    checkError("\"bad \\uXXXF esc\"", expectedError: .InvalidEscapeSequence(_idx, "\\uXXXF"))
   }
 
   func testLexesZero() {
@@ -198,35 +199,35 @@ class LexerTests: XCTestCase {
   }
 
   func testNumberZeroError() {
-    checkSyntaxError("00", expectedMessage: "Invalid number, unexpected digit after 0: (0).")
+    checkError("00", expectedError: .UnexpectedCharacterInNumberAfterZero(_idx, "0"))
   }
 
   func testNumberPlusError() {
-    checkSyntaxError("+1", expectedMessage: "Unexpected character: (+).")
+    checkError("+1", expectedError: .UnexpectedCharacter(_idx, "+"))
   }
 
   func testNumberInvalidDotNotationError0() {
-    checkSyntaxError("123.", expectedMessage: "Invalid number, expected digit but got: (\\u{FFFD}).")
+    checkError("123.", expectedError: .UnexpectedCharacterInNumber(_idx, Character(UnicodeScalar(0xFFFD))))
   }
 
   func testNumberInvalidDotNotationError1() {
-    checkSyntaxError(".123", expectedMessage: "Unexpected character: (.).")
+    checkError(".123", expectedError: .UnexpectedCharacter(_idx, Character(".")))
   }
 
   func testNumberInvalidDotNotationError2() {
-    checkSyntaxError("1.A", expectedMessage: "Invalid number, expected digit but got: (A).")
+    checkError("1.A", expectedError: .UnexpectedCharacterInNumber(_idx, Character("A")))
   }
 
   func testNumberInvalidNegativeError() {
-    checkSyntaxError("-A", expectedMessage: "Invalid number, expected digit but got: (A).")
+    checkError("-A", expectedError: .UnexpectedCharacterInNumber(_idx, Character("A")))
   }
 
   func testNumberInvalidExponentError0() {
-    checkSyntaxError("1.0e", expectedMessage: "Invalid number, expected digit but got: (\\u{FFFD}).")
+    checkError("1.0e", expectedError: .UnexpectedCharacterInNumber(_idx, Character(UnicodeScalar(0xFFFD))))
   }
 
   func testNumberInvalidExponentError1() {
-    checkSyntaxError("1.0eA", expectedMessage: "Invalid number, expected digit but got: (A).")
+    checkError("1.0eA", expectedError: .UnexpectedCharacterInNumber(_idx, Character("A")))
   }
 
   func testLexesBang() {
@@ -282,19 +283,19 @@ class LexerTests: XCTestCase {
   }
 
   func testUnexpectedCharacterError0() {
-    checkSyntaxError("?", expectedMessage: "Unexpected character: (?).")
+    checkError("?", expectedError: .UnexpectedCharacter(_idx, "?"))
   }
 
   func testUnexpectedCharacterError1() {
-    checkSyntaxError("..", expectedMessage: "Unexpected character: (.).")
+    checkError("..", expectedError: .UnexpectedCharacter(_idx, "."))
   }
 
   func testUnexpectedCharacterError2() {
-    checkSyntaxError("\u{203B}", expectedMessage: "Unexpected character: (\\u{203B}).")
+    checkError("\u{203B}", expectedError: .UnexpectedCharacter(_idx, Character(UnicodeScalar(0x203B))))
   }
 
   func testUnexpectedCharacterError3() {
-    checkSyntaxError("\u{200b}", expectedMessage: "Unexpected character: (\\u{200B}).")
+    checkError("\u{200b}", expectedError: .UnexpectedCharacter(_idx, Character(UnicodeScalar(0x200B))))
   }
 
   func testDashesInNames() {
@@ -305,9 +306,10 @@ class LexerTests: XCTestCase {
 
     do {
       let _ = try sut.next()
-    } catch LexerError.SyntaxError(_, _, let message) {
-      XCTAssertEqual(message, "Invalid number, expected digit but got: (b).")
+    } catch LexerError.UnexpectedCharacterInNumber(_, let character) {
+      XCTAssertEqual(character, Character("b"))
     } catch {
+      XCTFail("Unexpected error: \(error).")
     }
   }
 
@@ -337,32 +339,55 @@ class LexerTests: XCTestCase {
   }
 }
 
+extension LexerError: Equatable {}
+
+func == (lhs: LexerError, rhs: LexerError) -> Bool {
+  switch (lhs, rhs) {
+  case (.UnexpectedCharacter(_, let lhsCharacter), .UnexpectedCharacter(_, let rhsCharacter)):
+    return lhsCharacter == rhsCharacter
+  case (.InvalidCharacter(_, let lhsCharacter), .InvalidCharacter(_, let rhsCharacter)):
+    return lhsCharacter == rhsCharacter
+  case (.InvalidCharacterWithinString(_, let lhsCharacter), .InvalidCharacterWithinString(_, let rhsCharacter)):
+    return lhsCharacter == rhsCharacter
+  case (.InvalidEscapeSequence(_, let lhsCharacter), .InvalidEscapeSequence(_, let rhsCharacter)):
+    return lhsCharacter == rhsCharacter
+  case (.UnterminatedString, .UnterminatedString):
+    return true
+  case (.UnexpectedCharacterInNumberAfterZero(_, let lhsCharacter), .UnexpectedCharacterInNumberAfterZero(_, let rhsCharacter)):
+    return lhsCharacter == rhsCharacter
+  case (.UnexpectedCharacterInNumber(_, let lhsCharacter), .UnexpectedCharacterInNumber(_, let rhsCharacter)):
+    return lhsCharacter == rhsCharacter
+  default:
+    return false
+  }
+}
+
 extension LexerTests {
   private func firstToken(source: String) -> Token {
     return try! Lexer(source: source).next()
+  }
+
+  private func checkError(source: String, expectedError: LexerError, file: String = #file, line: UInt = #line) {
+    let sut = Lexer(source: source)
+
+    do {
+      let token = try sut.next()
+      let failureMessage = "checkError failed: did not throw but returned (\(token))"
+      recordFailureWithDescription(failureMessage, inFile: file, atLine: line, expected: true)
+    } catch let error as LexerError {
+      XCTAssertEqual(error, expectedError)
+      if (error != expectedError) {
+        recordFailureWithDescription("checkError failed: \(error) is not equal to \(expectedError)", inFile: file, atLine: line, expected: true)
+      }
+    } catch {
+      recordFailureWithDescription("checkError failed: \(error) is not a LexerError", inFile: file, atLine: line, expected: true)
+    }
   }
 
   private func checkTokenKindAndValue(lhs: Token, kind: TokenKind, value: String?, file: String = #file, line: UInt = #line) {
     if (lhs.kind != kind || lhs.value != value) {
       let message = "checkTokenKindAndValue failed: (\(lhs.kind), \(lhs.value)) is not equal to (\(kind), \(value))"
       recordFailureWithDescription(message, inFile: file, atLine: line, expected: true)
-    }
-  }
-
-  private func checkSyntaxError(source: String, expectedMessage: String, file: String = #file, line: UInt = #line) {
-    let lexer = Lexer(source: source)
-    do {
-      let token = try lexer.next()
-      let failureMessage = "checkSyntaxError failed: did not throw but returned (\(token))"
-      recordFailureWithDescription(failureMessage, inFile: file, atLine: line, expected: true)
-    } catch LexerError.SyntaxError(_, _, let actualMessage) {
-      if (expectedMessage != actualMessage) {
-        let failureMessage = "checkSyntaxError failed: (\(actualMessage)) is not equal to (\(expectedMessage))"
-        recordFailureWithDescription(failureMessage, inFile: file, atLine: line, expected: true)
-      }
-    } catch let error {
-      let failureMessage = "checkSyntaxError failed: (\(error)) is not a (LexerError.SyntaxError)"
-      recordFailureWithDescription(failureMessage, inFile: file, atLine: line, expected: true)
     }
   }
 }
