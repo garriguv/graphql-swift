@@ -1,6 +1,8 @@
 import Foundation
 
-public struct Document {
+public protocol Node {}
+
+public struct Document: Node {
   let definitions: [Definition]
 }
 
@@ -10,7 +12,7 @@ public func == (lhs: Document, rhs: Document) -> Bool {
   return lhs.definitions == rhs.definitions
 }
 
-public enum Definition {
+public enum Definition: Node {
   case Operation(OperationDefinition)
   case Fragment(FragmentDefinition)
   case Type(TypeDefinition)
@@ -34,7 +36,7 @@ public func == (lhs: Definition, rhs: Definition) -> Bool {
   }
 }
 
-public struct VariableDefinition {
+public struct VariableDefinition: Node {
   let variable: Variable
   let type: Type
   let defaultValue: Value?
@@ -48,7 +50,7 @@ public func == (lhs: VariableDefinition, rhs: VariableDefinition) -> Bool {
     lhs.defaultValue == rhs.defaultValue
 }
 
-public struct Variable {
+public struct Variable: Node {
   let name: Name
 }
 
@@ -58,7 +60,7 @@ public func == (lhs: Variable, rhs: Variable) -> Bool {
   return lhs.name == rhs.name
 }
 
-public struct SelectionSet {
+public struct SelectionSet: Node {
   let selections: [Selection]
 }
 
@@ -68,7 +70,7 @@ public func == (lhs: SelectionSet, rhs: SelectionSet) -> Bool {
   return lhs.selections == rhs.selections
 }
 
-public enum Selection {
+public enum Selection: Node {
   case FieldSelection(Field)
   case FragmentSpreadSelection(FragmentSpread)
   case InlineFragmentSelection(InlineFragment)
@@ -89,7 +91,7 @@ public func == (lhs: Selection, rhs: Selection) -> Bool {
   }
 }
 
-public struct FragmentSpread {
+public struct FragmentSpread: Node {
   let name: Name
   let directives: [Directive]
 }
@@ -101,7 +103,7 @@ public func == (lhs: FragmentSpread, rhs: FragmentSpread) -> Bool {
     lhs.directives == rhs.directives
 }
 
-public struct InlineFragment {
+public struct InlineFragment: Node {
   let typeCondition: Type?
   let directives: [Directive]
   let selectionSet: SelectionSet
@@ -115,7 +117,7 @@ public func == (lhs: InlineFragment, rhs: InlineFragment) -> Bool {
     lhs.selectionSet == rhs.selectionSet
 }
 
-public struct FragmentDefinition {
+public struct FragmentDefinition: Node {
   let name: Name
   let typeCondition: Type
   let directives: [Directive]
@@ -131,7 +133,7 @@ public func == (lhs: FragmentDefinition, rhs: FragmentDefinition) -> Bool {
     lhs.selectionSet == rhs.selectionSet
 }
 
-public indirect enum Value {
+public indirect enum Value: Node {
   case VariableValue(Variable)
   case IntValue(Int)
   case FloatValue(Float)
@@ -167,7 +169,7 @@ public func == (lhs: Value, rhs: Value) -> Bool {
   }
 }
 
-public struct ObjectField {
+public struct ObjectField: Node {
   let name: Name
   let value: Value
 }
@@ -179,7 +181,7 @@ public func == (lhs: ObjectField, rhs: ObjectField) -> Bool {
     lhs.value == rhs.value
 }
 
-public struct Directive {
+public struct Directive: Node {
   let name: Name
   let arguments: [Argument]
 }
@@ -191,7 +193,7 @@ public func == (lhs: Directive, rhs: Directive) -> Bool {
     lhs.arguments == rhs.arguments
 }
 
-public indirect enum Type {
+public indirect enum Type: Node {
   case Named(Name)
   case List(Type)
   case NonNull(Type)
@@ -212,7 +214,7 @@ public func == (lhs: Type, rhs: Type) -> Bool {
   }
 }
 
-public struct Argument {
+public struct Argument: Node {
   let name: Name
   let value: Value
 }
@@ -228,7 +230,7 @@ public enum OperationType: String {
   case query, mutation, subscription
 }
 
-public struct OperationDefinition {
+public struct OperationDefinition: Node {
   let type: OperationType
   let name: Name?
   let variableDefinitions: [VariableDefinition]
@@ -246,7 +248,7 @@ public func == (lhs: OperationDefinition, rhs: OperationDefinition) -> Bool {
     lhs.selectionSet == rhs.selectionSet
 }
 
-public struct Name {
+public struct Name: Node {
   let value: String?
 }
 
@@ -256,8 +258,7 @@ public func == (lhs: Name, rhs: Name) -> Bool {
   return lhs.value == rhs.value
 }
 
-
-public struct Field {
+public struct Field: Node {
   let alias: Name?
   let name: Name
   let arguments: [Argument]
@@ -275,7 +276,7 @@ public func == (lhs: Field, rhs: Field) -> Bool {
     lhs.selectionSet == rhs.selectionSet
 }
 
-public enum TypeDefinition {
+public enum TypeDefinition: Node {
   case Object(ObjectTypeDefinition)
   case Interface(InterfaceTypeDefinition)
   case Union(UnionTypeDefinition)
@@ -305,7 +306,7 @@ public func == (lhs: TypeDefinition, rhs: TypeDefinition) -> Bool {
   }
 }
 
-public struct ObjectTypeDefinition {
+public struct ObjectTypeDefinition: Node {
   let name: Name
   let interfaces: [Type]
   let fields: [FieldDefinition]
@@ -319,7 +320,7 @@ public func == (lhs: ObjectTypeDefinition, rhs: ObjectTypeDefinition) -> Bool {
     lhs.fields == rhs.fields
 }
 
-public struct FieldDefinition {
+public struct FieldDefinition: Node {
   let name: Name
   let arguments: [InputValueDefinition]
   let type: Type
@@ -333,7 +334,7 @@ public func == (lhs: FieldDefinition, rhs: FieldDefinition) -> Bool {
     lhs.type == rhs.type
 }
 
-public struct InputValueDefinition {
+public struct InputValueDefinition: Node {
   let name: Name
   let type: Type
   let defaultValue: Value?
@@ -347,7 +348,7 @@ public func == (lhs: InputValueDefinition, rhs: InputValueDefinition) -> Bool {
     lhs.defaultValue == rhs.defaultValue
 }
 
-public struct InterfaceTypeDefinition {
+public struct InterfaceTypeDefinition: Node {
   let name: Name
   let fields: [FieldDefinition]
 }
@@ -359,7 +360,7 @@ public func == (lhs: InterfaceTypeDefinition, rhs: InterfaceTypeDefinition) -> B
     lhs.fields == rhs.fields
 }
 
-public struct UnionTypeDefinition {
+public struct UnionTypeDefinition: Node {
   let name: Name
   let types: [Type]
 }
@@ -371,7 +372,7 @@ public func == (lhs: UnionTypeDefinition, rhs: UnionTypeDefinition) -> Bool {
     lhs.types == rhs.types
 }
 
-public struct ScalarTypeDefinition {
+public struct ScalarTypeDefinition: Node {
   let name: Name
 }
 
@@ -381,7 +382,7 @@ public func == (lhs: ScalarTypeDefinition, rhs: ScalarTypeDefinition) -> Bool {
   return lhs.name == rhs.name
 }
 
-public struct EnumTypeDefinition {
+public struct EnumTypeDefinition: Node {
   let name: Name
   let values: [EnumValueDefinition]
 }
@@ -393,7 +394,7 @@ public func == (lhs: EnumTypeDefinition, rhs: EnumTypeDefinition) -> Bool {
     lhs.values == rhs.values
 }
 
-public struct EnumValueDefinition {
+public struct EnumValueDefinition: Node {
   let name: Name
 }
 
@@ -403,7 +404,7 @@ public func == (lhs: EnumValueDefinition, rhs: EnumValueDefinition) -> Bool {
   return lhs.name == rhs.name
 }
 
-public struct InputObjectTypeDefinition {
+public struct InputObjectTypeDefinition: Node {
   let name: Name
   let fields: [InputValueDefinition]
 }
@@ -415,7 +416,7 @@ public func == (lhs: InputObjectTypeDefinition, rhs: InputObjectTypeDefinition) 
     lhs.fields == rhs.fields
 }
 
-public struct TypeExtensionDefinition {
+public struct TypeExtensionDefinition: Node {
   let definition: ObjectTypeDefinition
 }
 
