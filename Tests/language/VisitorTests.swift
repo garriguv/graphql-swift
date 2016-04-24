@@ -4,6 +4,34 @@ import XCTest
 
 class VisitorTests: XCTestCase {
 
+  func testVisitorSequenceType() {
+    let ast = try! Parser(source: "{ a, b { x }, c }").parse()
+    let sut = Visitor(node: ast)
+
+    let result = sut.map {
+      return "\($0.dynamicType)"
+    }
+
+    XCTAssertEqual(result, [
+      "Document",
+      "Definition",
+      "OperationDefinition",
+      "SelectionSet",
+      "Selection",
+      "Field",
+      "Name",
+      "Selection",
+      "Field",
+      "Name",
+      "SelectionSet",
+      "Selection",
+      "Field",
+      "Name",
+      "Selection",
+      "Field",
+      "Name"])
+  }
+
   func testAllowsSkippingSubtree() {
     let ast = try! Parser(source: "{ a, b { x }, c }").parse()
     var array: [String] = []

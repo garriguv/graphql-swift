@@ -1,5 +1,34 @@
 import Foundation
 
+public struct Visitor: SequenceType {
+  let node: Node
+
+  @warn_unused_result public func generate() -> VisitorGenerator {
+    return VisitorGenerator(node: node)
+  }
+}
+
+public class VisitorGenerator: GeneratorType {
+  private var allNodes: [Node] = []
+  private var nodesSlice: ArraySlice<Node>
+
+  init(node: Node) {
+    var nodes: [Node] = []
+    visit(node, enter: { node in
+      nodes.append(node)
+      return .Continue
+    }, leave: { node in
+      return .Continue
+    })
+    allNodes = nodes
+    nodesSlice = allNodes[allNodes.indices]
+  }
+
+  @warn_unused_result public func next() -> Node? {
+    return nodesSlice.popFirst()
+  }
+}
+
 public enum VisitorBehavior {
   case Continue
   case SkipNode
@@ -28,7 +57,7 @@ public func visit(node: Node, enter: VisitorFunction, leave: VisitorFunction) {
   case Definition.Type(let typeDefinition):
     visit(typeDefinition, enter: enter, leave: leave)
   case Definition.TypeExtension(let typeExtensionDefinition):
-    visit(typeExtensionDefinition.definition, enter: enter, leave: leave)
+    visit(typeExtensionDefinition, enter: enter, leave: leave)
   case let variableDefinition as VariableDefinition:
     visit(variableDefinition.variable, enter: enter, leave: leave)
     visit(variableDefinition.type, enter: enter, leave: leave)
