@@ -59,55 +59,58 @@ extension Lexer {
     }
 
     switch code {
-    // "
-    case 34:
+    case 34:        // "
       return try readString()
-    // A-Z _ a-z
-    case 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 95, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122:
+    case 65...90:   // A-Z
+      fallthrough
+    case 95:        // _
+      fallthrough
+    case 97...122:  // a-z
       return try readName();
-    // - 0-9
-    case 45, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57:
+    case 45:        // -
+      fallthrough
+    case 48...57:   // 0-9
       return try readNumber();
-    case 33: // !
+    case 33:        // !
       position = position.successor()
       return Token(kind: .Bang, start: position.predecessor(), end: position, value: nil)
-    case 36: // $
+    case 36:        // $
       position = position.successor()
       return Token(kind: .Dollar, start: position.predecessor(), end: position, value: nil)
-    case 40: // (
+    case 40:        // (
       position = position.successor()
       return Token(kind: .ParenL, start: position.predecessor(), end: position, value: nil)
-    case 41: // )
+    case 41:        // )
       position = position.successor()
       return Token(kind: .ParenR, start: position.predecessor(), end: position, value: nil)
-    case 46: // .
+    case 46:        // .
       if (source[position.successor()].value == 46 && source[position.successor().successor()].value == 46) {
         let start = position
         position = position.successor().successor().successor()
         return Token(kind: .Spread, start: start, end: position, value: nil)
       }
-    case 58: // :
+    case 58:        // :
       position = position.successor()
       return Token(kind: .Colon, start: position.predecessor(), end: position, value: nil)
-    case 61: // =
+    case 61:        // =
       position = position.successor()
       return Token(kind: .Equals, start: position.predecessor(), end: position, value: nil)
-    case 64: // @
+    case 64:        // @
       position = position.successor()
       return Token(kind: .At, start: position.predecessor(), end: position, value: nil)
-    case 91: // [
+    case 91:        // [
       position = position.successor()
       return Token(kind: .BracketL, start: position.predecessor(), end: position, value: nil)
-    case 93: // ]
+    case 93:        // ]
       position = position.successor()
       return Token(kind: .BracketR, start: position.predecessor(), end: position, value: nil)
-    case 123: // {
+    case 123:         // {
       position = position.successor()
       return Token(kind: .BraceL, start: position.predecessor(), end: position, value: nil)
-    case 124: // |
+    case 124:         // |
       position = position.successor()
       return Token(kind: .Pipe, start: position.predecessor(), end: position, value: nil)
-    case 125: // }
+    case 125:         // }
       position = position.successor()
       return Token(kind: .BraceR, start: position.predecessor(), end: position, value: nil)
     default:
@@ -131,10 +134,10 @@ extension Lexer {
 
   private func codeIsAlphanumeric(code: UInt32) -> Bool {
     return
-      code >= 48 && code <= 57 || // 0-9
-      code >= 65 && code <= 90 || // A-Z
-      code == 95 ||               // _
-      code >= 97 && code <= 122   // a-z
+      48...57 ~= code ||  // 0-9
+      65...90 ~= code ||  // A-Z
+      code == 95 ||       // _
+      97...122 ~= code    // A-Z
   }
 
   private func readString() throws -> Token {
@@ -248,11 +251,11 @@ extension Lexer {
 
   private func readDigits() throws {
     var code = source[position].value
-    if (code >= 48 && code <= 57) {
+    if (48...57 ~= code) {
       repeat {
         position = position.successor()
         code = source[position].value
-      } while (position < source.endIndex && code >= 48 && code <= 57)
+      } while (position < source.endIndex && 48...57 ~= code)
     } else {
       throw LexerError.UnexpectedCharacterInNumber(position, Character(source[position]))
     }
