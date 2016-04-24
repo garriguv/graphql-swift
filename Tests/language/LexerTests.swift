@@ -44,6 +44,19 @@ class LexerTests: XCTestCase {
     checkTokenKindAndValue(firstToken("\"unicode \\u1234\\u5678\\u90AB\\uCDEF\""), kind: .String, value: "unicode \u{1234}\u{5678}\u{90AB}\u{CDEF}")
   }
 
+  func testLexesMultibyteCharacters() {
+    let sut = Lexer(source: "# This comment has a \u{0A0A} multi-byte character.\n{ field(arg: \"Has a \u{0A0A} multi-byte character.\") }")
+
+    do {
+      var token: Token
+      repeat {
+        token = try sut.next()
+      } while (token.kind != .EOF)
+    } catch {
+      XCTFail("Unexpected error: \(error)")
+    }
+  }
+
   func testUnterminatedShortStringError() {
     checkSyntaxError("\"", expectedMessage: "Unterminated string.")
   }
@@ -299,8 +312,7 @@ class LexerTests: XCTestCase {
   }
 
   func testLexesSpreadDigit() {
-    let source = "... 123"
-    let sut = Lexer(source: source)
+    let sut = Lexer(source: "... 123")
 
     let firstToken = try! sut.next()
     let secondToken = try! sut.next()
@@ -311,6 +323,18 @@ class LexerTests: XCTestCase {
     checkTokenKindAndValue(thirdToken, kind: .EOF, value: nil)
   }
 
+  func testLexesKitchenSink() {
+    let sut = Lexer(source: graphQlQuery("kitchen_sink"))
+
+    do {
+      var token: Token
+      repeat {
+        token = try sut.next()
+      } while (token.kind != .EOF)
+    } catch {
+      XCTFail("Unexpected error: \(error)")
+    }
+  }
 }
 
 extension LexerTests {

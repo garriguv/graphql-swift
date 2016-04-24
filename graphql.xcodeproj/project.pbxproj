@@ -7,20 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9FD5B01AE078BBCC03E0343A /* TestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B96BAE4947686275B11A /* TestUtilities.swift */; };
 		9FD5B07E2C696751E4AF616B /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */; };
 		9FD5B13F5F720BF712D0FB46 /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */; };
 		9FD5B1752AFD5F5AF4AFF778 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
+		9FD5B355A1534F5AD107F338 /* kitchen_sink.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9FD5B989A98F64119A07BCFC /* kitchen_sink.graphql */; };
 		9FD5B37A2B64F8AADA46B21A /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
 		9FD5B3A79EE79B7FB88E1DD4 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
 		9FD5B522488732CCBB06461B /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
+		9FD5B6AA14E899F274331144 /* TestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B96BAE4947686275B11A /* TestUtilities.swift */; };
 		9FD5B6B45CE0AF6F23683331 /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
 		9FD5B752A4093BEB3C8DFF5D /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
+		9FD5B79D58304FED5724796E /* TestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B96BAE4947686275B11A /* TestUtilities.swift */; };
 		9FD5B7B84A03277E87DD5FCB /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
 		9FD5B92A3A3E3CD0525EC946 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
 		9FD5B9A8224465ADFD354677 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
+		9FD5BA37879CD36B768EACB1 /* kitchen_sink.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9FD5B989A98F64119A07BCFC /* kitchen_sink.graphql */; };
 		9FD5BA42DC5B3035134F07A6 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
 		9FD5BA6284D3000CA76C1A9A /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
 		9FD5BC88E8CFBFB1787AAB32 /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
+		9FD5BCA6D3C6EA0383944B6D /* kitchen_sink.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9FD5B989A98F64119A07BCFC /* kitchen_sink.graphql */; };
 		9FD5BD28B4AE136B2BAA2834 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
 		9FD5BE26AE0249521238FE71 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
 		9FD5BF64173E8E065DACFB35 /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */; };
@@ -30,19 +36,12 @@
 		EB4791D71CBD8AF700C04D13 /* GraphQL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB86F1B61CBD812C00021DCE /* GraphQL.framework */; };
 		EBB78EA71CC9332400D366AB /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB78EA11CC9332400D366AB /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EBB78EA81CC9332400D366AB /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB78EA21CC9332400D366AB /* graphql.swift */; };
-		EBB78EA91CC9332400D366AB /* Info-iOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EA31CC9332400D366AB /* Info-iOS.plist */; };
-		EBB78EAA1CC9332400D366AB /* Info-OSX.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EA41CC9332400D366AB /* Info-OSX.plist */; };
-		EBB78EAB1CC9332400D366AB /* Info-tvOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EA51CC9332400D366AB /* Info-tvOS.plist */; };
-		EBB78EAC1CC9332400D366AB /* Info-watchOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EA61CC9332400D366AB /* Info-watchOS.plist */; };
 		EBB78EAD1CC9332800D366AB /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB78EA21CC9332400D366AB /* graphql.swift */; };
 		EBB78EAE1CC9332900D366AB /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB78EA21CC9332400D366AB /* graphql.swift */; };
 		EBB78EAF1CC9332900D366AB /* graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB78EA21CC9332400D366AB /* graphql.swift */; };
 		EBB78EB01CC9332D00D366AB /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB78EA11CC9332400D366AB /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EBB78EB11CC9332D00D366AB /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB78EA11CC9332400D366AB /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EBB78EB21CC9332E00D366AB /* GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB78EA11CC9332400D366AB /* GraphQL.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EBB78EB61CCAAE2E00D366AB /* Info-iOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EB31CCAAE2E00D366AB /* Info-iOS.plist */; };
-		EBB78EB71CCAAE2E00D366AB /* Info-OSX.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EB41CCAAE2E00D366AB /* Info-OSX.plist */; };
-		EBB78EB81CCAAE2E00D366AB /* Info-tvOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBB78EB51CCAAE2E00D366AB /* Info-tvOS.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +73,8 @@
 		9FD5B3BAC305189E35253A1C /* Lexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
 		9FD5B4DE56C84A88027883C1 /* Ast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ast.swift; sourceTree = "<group>"; };
 		9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		9FD5B96BAE4947686275B11A /* TestUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtilities.swift; sourceTree = "<group>"; };
+		9FD5B989A98F64119A07BCFC /* kitchen_sink.graphql */ = {isa = PBXFileReference; lastKnownFileType = file.graphql; path = kitchen_sink.graphql; sourceTree = "<group>"; };
 		9FD5BAF9AC8C6404E631914E /* ParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
 		EB4791B41CBD85E200C04D13 /* GraphQL OS X Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphQL OS X Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB4791C31CBD85F400C04D13 /* GraphQL iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphQL iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,6 +159,14 @@
 			path = language;
 			sourceTree = "<group>";
 		};
+		9FD5B5634E161C8329C9556E /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				9FD5B989A98F64119A07BCFC /* kitchen_sink.graphql */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
 		9FD5B82CBE7745EDB92D233A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +174,8 @@
 				EBB78EB41CCAAE2E00D366AB /* Info-OSX.plist */,
 				EBB78EB51CCAAE2E00D366AB /* Info-tvOS.plist */,
 				9FD5B2B252E7F777F61BE458 /* language */,
+				9FD5BA606FC338C69E048251 /* utilities */,
+				9FD5B5634E161C8329C9556E /* resources */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -177,6 +188,14 @@
 				9FD5B4DE56C84A88027883C1 /* Ast.swift */,
 			);
 			path = language;
+			sourceTree = "<group>";
+		};
+		9FD5BA606FC338C69E048251 /* utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9FD5B96BAE4947686275B11A /* TestUtilities.swift */,
+			);
+			path = utilities;
 			sourceTree = "<group>";
 		};
 		EB2B58791CBD80750007387E = {
@@ -440,6 +459,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FD5B355A1534F5AD107F338 /* kitchen_sink.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,6 +467,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FD5BCA6D3C6EA0383944B6D /* kitchen_sink.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +475,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FD5BA37879CD36B768EACB1 /* kitchen_sink.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,13 +483,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBB78EAB1CC9332400D366AB /* Info-tvOS.plist in Resources */,
-				EBB78EA91CC9332400D366AB /* Info-iOS.plist in Resources */,
-				EBB78EB81CCAAE2E00D366AB /* Info-tvOS.plist in Resources */,
-				EBB78EB61CCAAE2E00D366AB /* Info-iOS.plist in Resources */,
-				EBB78EAC1CC9332400D366AB /* Info-watchOS.plist in Resources */,
-				EBB78EAA1CC9332400D366AB /* Info-OSX.plist in Resources */,
-				EBB78EB71CCAAE2E00D366AB /* Info-OSX.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +516,7 @@
 			files = (
 				9FD5B7B84A03277E87DD5FCB /* ParserTests.swift in Sources */,
 				9FD5B07E2C696751E4AF616B /* LexerTests.swift in Sources */,
+				9FD5B79D58304FED5724796E /* TestUtilities.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,6 +526,7 @@
 			files = (
 				9FD5B3A79EE79B7FB88E1DD4 /* ParserTests.swift in Sources */,
 				9FD5BF64173E8E065DACFB35 /* LexerTests.swift in Sources */,
+				9FD5B01AE078BBCC03E0343A /* TestUtilities.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +536,7 @@
 			files = (
 				9FD5B37A2B64F8AADA46B21A /* ParserTests.swift in Sources */,
 				9FD5B13F5F720BF712D0FB46 /* LexerTests.swift in Sources */,
+				9FD5B6AA14E899F274331144 /* TestUtilities.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -183,7 +183,8 @@ extension Lexer {
     }
 
     value.appendContentsOf(String(source[chunkStart..<position]))
-    return Token(kind: .String, start: start.predecessor(), end: position.successor(), value: value)
+    position = position.successor()
+    return Token(kind: .String, start: start.predecessor(), end: position, value: value)
   }
 
   private func unicodeCharacter() throws -> UnicodeScalar {

@@ -3,7 +3,7 @@ import Foundation
 enum Keyword: String {
   case on, fragment, boolTrue = "true", boolFalse = "false", null, implements
   case type, interface, union, scalar, enumType = "enum", input, extend
-  case query, mutation
+  case query, mutation, subscription
 }
 
 enum ParserError: ErrorType {
@@ -49,7 +49,7 @@ extension Parser {
     }
 
     switch keyword {
-    case .query, .mutation:
+    case .query, .mutation, .subscription:
       return .Operation(try parseOperationDefinition())
     case .fragment:
       return .Fragment(try parseFragmentDefinition())
