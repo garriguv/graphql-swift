@@ -7,14 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9FD5B00BAA7342997F2379F0 /* Printer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4588A548B3FEE7818C7 /* Printer.swift */; };
 		9FD5B01AE078BBCC03E0343A /* TestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B96BAE4947686275B11A /* TestUtilities.swift */; };
 		9FD5B0736CB906E9FFBFE497 /* VisitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B86B508316BC661AA552 /* VisitorTests.swift */; };
 		9FD5B07E2C696751E4AF616B /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */; };
+		9FD5B092368674ACDB082D17 /* Printer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4588A548B3FEE7818C7 /* Printer.swift */; };
 		9FD5B13F5F720BF712D0FB46 /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */; };
 		9FD5B14626E62EB3D41D2BBE /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BE04DBE114F484075A3A /* Visitor.swift */; };
+		9FD5B1521A5E0236B6A856A5 /* Printer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4588A548B3FEE7818C7 /* Printer.swift */; };
 		9FD5B1752AFD5F5AF4AFF778 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
 		9FD5B355A1534F5AD107F338 /* kitchen_sink.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9FD5B989A98F64119A07BCFC /* kitchen_sink.graphql */; };
 		9FD5B37A2B64F8AADA46B21A /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
+		9FD5B3889D5E08538A91A7BA /* PrinterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B0245CB6552FC4F36653 /* PrinterTests.swift */; };
 		9FD5B3A79EE79B7FB88E1DD4 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
 		9FD5B486361EA0C29CFE013E /* VisitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B86B508316BC661AA552 /* VisitorTests.swift */; };
 		9FD5B522488732CCBB06461B /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
@@ -24,11 +28,14 @@
 		9FD5B752A4093BEB3C8DFF5D /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
 		9FD5B79D58304FED5724796E /* TestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B96BAE4947686275B11A /* TestUtilities.swift */; };
 		9FD5B7B84A03277E87DD5FCB /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BAF9AC8C6404E631914E /* ParserTests.swift */; };
+		9FD5B88A85FE4E66CDA3DB29 /* PrinterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B0245CB6552FC4F36653 /* PrinterTests.swift */; };
 		9FD5B92A3A3E3CD0525EC946 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */; };
 		9FD5B9A8224465ADFD354677 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
+		9FD5B9E7484D4769C3813316 /* PrinterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B0245CB6552FC4F36653 /* PrinterTests.swift */; };
 		9FD5BA37879CD36B768EACB1 /* kitchen_sink.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9FD5B989A98F64119A07BCFC /* kitchen_sink.graphql */; };
 		9FD5BA42DC5B3035134F07A6 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B3BAC305189E35253A1C /* Lexer.swift */; };
 		9FD5BA6284D3000CA76C1A9A /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
+		9FD5BAF09770EE234A5945AF /* Printer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4588A548B3FEE7818C7 /* Printer.swift */; };
 		9FD5BB52B21F7E18FDA01138 /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5BE04DBE114F484075A3A /* Visitor.swift */; };
 		9FD5BC88E8CFBFB1787AAB32 /* Ast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B4DE56C84A88027883C1 /* Ast.swift */; };
 		9FD5BC92D72CEA3B760C6257 /* VisitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B86B508316BC661AA552 /* VisitorTests.swift */; };
@@ -76,8 +83,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9FD5B0245CB6552FC4F36653 /* PrinterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrinterTests.swift; sourceTree = "<group>"; };
 		9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
 		9FD5B3BAC305189E35253A1C /* Lexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
+		9FD5B4588A548B3FEE7818C7 /* Printer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Printer.swift; sourceTree = "<group>"; };
 		9FD5B4DE56C84A88027883C1 /* Ast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ast.swift; sourceTree = "<group>"; };
 		9FD5B6C1CA5762C3E9FABC13 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		9FD5B86B508316BC661AA552 /* VisitorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitorTests.swift; sourceTree = "<group>"; };
@@ -165,6 +174,7 @@
 				9FD5BAF9AC8C6404E631914E /* ParserTests.swift */,
 				9FD5B21F5E7A0CFDC1C106F9 /* LexerTests.swift */,
 				9FD5B86B508316BC661AA552 /* VisitorTests.swift */,
+				9FD5B0245CB6552FC4F36653 /* PrinterTests.swift */,
 			);
 			path = language;
 			sourceTree = "<group>";
@@ -197,6 +207,7 @@
 				9FD5B3BAC305189E35253A1C /* Lexer.swift */,
 				9FD5B4DE56C84A88027883C1 /* Ast.swift */,
 				9FD5BE04DBE114F484075A3A /* Visitor.swift */,
+				9FD5B4588A548B3FEE7818C7 /* Printer.swift */,
 			);
 			path = language;
 			sourceTree = "<group>";
@@ -529,6 +540,7 @@
 				9FD5B07E2C696751E4AF616B /* LexerTests.swift in Sources */,
 				9FD5B79D58304FED5724796E /* TestUtilities.swift in Sources */,
 				9FD5BC92D72CEA3B760C6257 /* VisitorTests.swift in Sources */,
+				9FD5B9E7484D4769C3813316 /* PrinterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -540,6 +552,7 @@
 				9FD5BF64173E8E065DACFB35 /* LexerTests.swift in Sources */,
 				9FD5B01AE078BBCC03E0343A /* TestUtilities.swift in Sources */,
 				9FD5B0736CB906E9FFBFE497 /* VisitorTests.swift in Sources */,
+				9FD5B88A85FE4E66CDA3DB29 /* PrinterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,6 +564,7 @@
 				9FD5B13F5F720BF712D0FB46 /* LexerTests.swift in Sources */,
 				9FD5B6AA14E899F274331144 /* TestUtilities.swift in Sources */,
 				9FD5B486361EA0C29CFE013E /* VisitorTests.swift in Sources */,
+				9FD5B3889D5E08538A91A7BA /* PrinterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,6 +577,7 @@
 				9FD5B9A8224465ADFD354677 /* Lexer.swift in Sources */,
 				9FD5BFBFE7F98A235568BECF /* Ast.swift in Sources */,
 				9FD5BDAB5BEB9E304170ACBF /* Visitor.swift in Sources */,
+				9FD5B092368674ACDB082D17 /* Printer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,6 +590,7 @@
 				9FD5B522488732CCBB06461B /* Lexer.swift in Sources */,
 				9FD5BA6284D3000CA76C1A9A /* Ast.swift in Sources */,
 				9FD5B5C31F18FE7640FA2DCF /* Visitor.swift in Sources */,
+				9FD5B00BAA7342997F2379F0 /* Printer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,6 +603,7 @@
 				9FD5BA42DC5B3035134F07A6 /* Lexer.swift in Sources */,
 				9FD5BC88E8CFBFB1787AAB32 /* Ast.swift in Sources */,
 				9FD5BB52B21F7E18FDA01138 /* Visitor.swift in Sources */,
+				9FD5B1521A5E0236B6A856A5 /* Printer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -599,6 +616,7 @@
 				9FD5BD28B4AE136B2BAA2834 /* Lexer.swift in Sources */,
 				9FD5B6B45CE0AF6F23683331 /* Ast.swift in Sources */,
 				9FD5B14626E62EB3D41D2BBE /* Visitor.swift in Sources */,
+				9FD5BAF09770EE234A5945AF /* Printer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
