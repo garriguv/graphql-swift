@@ -29,8 +29,8 @@ extension Definition: PrettyPrintable {
 
 extension OperationDefinition: PrettyPrintable {
   public func prettyPrint() -> String {
-    let renderedVariableDefinitions = _wrap("(", _join(variableDefinitions, ", "), ")")
-    let renderedDirectives = _join(directives, " ")
+    let renderedVariableDefinitions = variableDefinitions.prettyPrintWithSeparator(", ").surroundWith("(", ")")
+    let renderedDirectives = directives.prettyPrintWithSeparator(" ")
     if type == .query && name == nil && renderedDirectives.isEmpty && renderedVariableDefinitions.isEmpty {
       return selectionSet.prettyPrint()
     } else {
@@ -60,9 +60,7 @@ extension VariableDefinition: PrettyPrintable {
 
 extension SelectionSet: PrettyPrintable {
   public func prettyPrint() -> String {
-    return _block(selections.map {
-      $0.prettyPrint()
-    })
+    return selections.prettyPrintBlock()
   }
 }
 
@@ -82,10 +80,10 @@ extension Selection: PrettyPrintable {
 extension Field: PrettyPrintable {
   public func prettyPrint() -> String {
     return [
-      _wrap("", alias?.prettyPrint(), ": "),
+      alias?.prettyPrint().surroundWith("", ": "),
       name.prettyPrint(),
-      _wrap("(", _join(arguments, ", "), ")"),
-      _join(directives, " "),
+      arguments.prettyPrintWithSeparator(", ").surroundWith("(", ")"),
+      directives.prettyPrintWithSeparator(" "),
       selectionSet?.prettyPrint()
     ].compactJoinWithSeparator(" ")
   }
@@ -99,9 +97,7 @@ extension Argument: PrettyPrintable {
 
 extension FragmentSpread: PrettyPrintable {
   public func prettyPrint() -> String {
-    return "...\(name.prettyPrint())" + _wrap(" ", directives.flatMap {
-      $0.prettyPrint()
-    }.joinWithSeparator(" "), " ")
+    return "...\(name.prettyPrint())" + directives.prettyPrintWithSeparator(" ").surroundWith(" ", " ")
   }
 }
 
@@ -109,7 +105,7 @@ extension InlineFragment: PrettyPrintable {
   public func prettyPrint() -> String {
     return [
       "...",
-      _wrap("on ", typeCondition?.prettyPrint()),
+      typeCondition?.prettyPrint().surroundWith("on "),
       directives.flatMap {
         $0.prettyPrint()
       }.joinWithSeparator(" "),
@@ -168,9 +164,7 @@ extension ObjectField: PrettyPrintable {
 
 extension Directive: PrettyPrintable {
   public func prettyPrint() -> String {
-    return "@\(name.prettyPrint())" + _wrap("(", arguments.flatMap {
-      $0.prettyPrint()
-    }.joinWithSeparator(", "), ")")
+    return "@\(name.prettyPrint())" + arguments.prettyPrintWithSeparator(", ").surroundWith("(", ")")
   }
 }
 
@@ -192,19 +186,15 @@ extension ObjectTypeDefinition: PrettyPrintable {
     return [
       "type",
       name.prettyPrint(),
-      _wrap("implements ", interfaces.flatMap {
-        $0.prettyPrint()
-      }.joinWithSeparator(", ")),
-      _block(fields.flatMap {
-        $0.prettyPrint()
-      })
+      interfaces.prettyPrintWithSeparator(", ").surroundWith("implements "),
+      fields.prettyPrintBlock()
     ].compactJoinWithSeparator(" ")
   }
 }
 
 extension FieldDefinition: PrettyPrintable {
   public func prettyPrint() -> String {
-    return "\(name.prettyPrint())" + _wrap("(", _join(arguments, ", "), ")")
+    return "\(name.prettyPrint())" + arguments.prettyPrintWithSeparator(", ").surroundWith("(", ")")
   }
 }
 
@@ -229,24 +219,19 @@ extension TypeDefinition: PrettyPrintable {
 
 extension InputValueDefinition: PrettyPrintable {
   public func prettyPrint() -> String {
-    return name.prettyPrint() +
-      ": " +
-      "\(type.prettyPrint())" +
-      _wrap(" = ", defaultValue?.prettyPrint())
+    return name.prettyPrint() + ": " + "\(type.prettyPrint())" + (defaultValue?.prettyPrint().surroundWith(" = ") ?? "")
   }
 }
 
 extension InterfaceTypeDefinition: PrettyPrintable {
   public func prettyPrint() -> String {
-    return "interface " + name.prettyPrint() + " " + _block(fields.flatMap {
-      $0.prettyPrint()
-    })
+    return "interface " + name.prettyPrint() + " " + fields.prettyPrintBlock()
   }
 }
 
 extension UnionTypeDefinition: PrettyPrintable {
   public func prettyPrint() -> String {
-    return "union " + name.prettyPrint() + " = " + _join(types, " | ")
+    return "union " + name.prettyPrint() + " = " + types.prettyPrintWithSeparator(" | ")
   }
 }
 
@@ -258,9 +243,7 @@ extension ScalarTypeDefinition: PrettyPrintable {
 
 extension EnumTypeDefinition: PrettyPrintable {
   public func prettyPrint() -> String {
-    return "enum " + name.prettyPrint() + " " + _block(values.flatMap {
-      $0.prettyPrint()
-    })
+    return "enum " + name.prettyPrint() + " " + values.prettyPrintBlock()
   }
 }
 
@@ -272,9 +255,7 @@ extension EnumValueDefinition: PrettyPrintable {
 
 extension InputObjectTypeDefinition: PrettyPrintable {
   public func prettyPrint() -> String {
-    return "input " + name.prettyPrint() + _block(fields.flatMap {
-      $0.prettyPrint()
-    })
+    return "input " + name.prettyPrint() + fields.prettyPrintBlock()
   }
 }
 
@@ -296,30 +277,6 @@ extension Name: PrettyPrintable {
   }
 }
 
-private func _block(array: [String]) -> String {
-  return array.isEmpty ? "" : _indent("{\n" + array.joinWithSeparator("\n")) + "\n}"
-}
-
-private func _wrap(start: String, _ string: String?, _ end: String = "") -> String {
-  if let string = string where !string.isEmpty {
-    return start + string + end
-  } else {
-    return ""
-  }
-}
-
-private func _join<T:CollectionType>(elements: T, _ separator: String = "") -> String {
-  if elements.isEmpty {
-    return ""
-  } else {
-    return elements.flatMap {
-      $0 as? PrettyPrintable
-    }.map {
-      $0.prettyPrint()
-    }.joinWithSeparator(separator)
-  }
-}
-
 extension SequenceType where Generator.Element == String? {
   private func compactJoinWithSeparator(separator: String) -> String {
     return self.flatMap {
@@ -331,15 +288,43 @@ extension SequenceType where Generator.Element == String? {
 }
 
 extension SequenceType where Generator.Element: PrettyPrintable {
-  private func _printWithSeparator(separator: String) -> String {
+  private func prettyPrintWithSeparator(separator: String) -> String {
     return self.flatMap {
       $0.prettyPrint()
     }.filter {
       !$0.isEmpty
     }.joinWithSeparator(separator) ?? ""
   }
+
+  private func prettyPrintBlock() -> String {
+    return self.flatMap {
+      $0.prettyPrint()
+    }.filter {
+      !$0.isEmpty
+    }.block() ?? ""
+  }
 }
 
-private func _indent(string: String) -> String {
-  return string.stringByReplacingOccurrencesOfString("\n", withString: "\n  ")
+extension CollectionType where Generator.Element == String {
+  private func block() -> String {
+    if self.isEmpty {
+      return ""
+    } else {
+      return ("{\n" + joinWithSeparator("\n")).indent() + "\n}"
+    }
+  }
+}
+
+extension String {
+  private func indent() -> String {
+    return stringByReplacingOccurrencesOfString("\n", withString: "\n  ")
+  }
+
+  private func surroundWith(left: String, _ right: String = "") -> String {
+    if isEmpty {
+      return ""
+    } else {
+      return left + self + right
+    }
+  }
 }
