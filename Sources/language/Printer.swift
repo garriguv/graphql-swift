@@ -1,142 +1,298 @@
 import Foundation
 
-public func print(node: Node) -> String {
-  return _print(node) ?? ""
+public protocol PrettyPrintable {
+  func prettyPrint() -> String
 }
 
-private func _print(node: Node?) -> String {
-  guard let node = node else {
-    return ""
+extension Document: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return definitions.flatMap {
+      $0.prettyPrint()
+    }.joinWithSeparator("\n\n") + "\n"
   }
-  switch node {
-  case let document as Document:
-    return document.definitions.flatMap { _print($0) }.joinWithSeparator("\n\n") + "\n"
-  case Definition.Operation(let operationDefinition):
-    return _print(operationDefinition)
-  case Definition.Fragment(let fragmentDefinition):
-    return _print(fragmentDefinition)
-  case Definition.Type(let typeDefinition):
-    return _print(typeDefinition)
-  case Definition.TypeExtension(let typeExtensionDefinition):
-    return _print(typeExtensionDefinition)
-  case let operationDefinition as OperationDefinition:
-    let variableDefinitions = "(" + operationDefinition.variableDefinitions.flatMap { _print($0) }.joinWithSeparator(", ") + ")"
-    let directives = operationDefinition.directives.flatMap { _print($0) }.joinWithSeparator(" ")
-    if operationDefinition.type == .query && operationDefinition.name == nil && operationDefinition.directives.isEmpty && operationDefinition.variableDefinitions.isEmpty {
-      return _print(operationDefinition.selectionSet)
-    } else {
-      return [
-        operationDefinition.type.rawValue,
-        [
-          _print(operationDefinition.name),
-          variableDefinitions
-        ].compactJoinWithSeparator(""),
-        directives,
-        _print(operationDefinition.selectionSet)
-      ].compactJoinWithSeparator(" ")
+}
+
+extension Definition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    switch self {
+    case Definition.Operation(let operationDefinition):
+      return operationDefinition.prettyPrint()
+    case Definition.Fragment(let fragmentDefinition):
+      return fragmentDefinition.prettyPrint()
+    case Definition.Type(let typeDefinition):
+      return typeDefinition.prettyPrint()
+    case Definition.TypeExtension(let typeExtensionDefinition):
+      return typeExtensionDefinition.prettyPrint()
     }
-  case let variableDefinition as VariableDefinition:
-    var variableString = "\(_print(variableDefinition.variable)): \(_print(variableDefinition.type))"
-    if let defaultValue = variableDefinition.defaultValue {
-      variableString += " = \(_print(defaultValue))"
+  }
+}
+
+extension OperationDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    let renderedVariableDefinitions = _wrap("(", _join(variableDefinitions, ", "), ")")
+    let renderedDirectives = _join(directives, " ")
+    if type == .query && name == nil && renderedDirectives.isEmpty && renderedVariableDefinitions.isEmpty {
+      return selectionSet.prettyPrint()
+    } else {
+      let arr = [
+        type.rawValue,
+        [
+          name?.prettyPrint(),
+          renderedVariableDefinitions
+          ].compactJoinWithSeparator(""),
+        renderedDirectives,
+        selectionSet.prettyPrint()
+        ].compactJoinWithSeparator(" ")
+      return arr
+    }
+  }
+}
+
+extension VariableDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    var variableString = "\(variable.prettyPrint()): \(type.prettyPrint())"
+    if let defaultValue = defaultValue {
+      variableString += " = \(defaultValue.prettyPrint())"
     }
     return variableString
-  case let selectionSet as SelectionSet:
-    return _block(selectionSet.selections.flatMap { _print($0) })
-  case Selection.FieldSelection(let field):
-    return _print(field)
-  case Selection.FragmentSpreadSelection(let fragmentSpread):
-    return _print(fragmentSpread)
-  case Selection.InlineFragmentSelection(let inlineFragment):
-    return _print(inlineFragment)
-  case let field as Field:
+  }
+}
+
+extension SelectionSet: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return _block(selections.map {
+      $0.prettyPrint()
+    })
+  }
+}
+
+extension Selection: PrettyPrintable {
+  public func prettyPrint() -> String {
+    switch self {
+    case Selection.FieldSelection(let field):
+      return field.prettyPrint()
+    case Selection.FragmentSpreadSelection(let fragmentSpread):
+      return fragmentSpread.prettyPrint()
+    case Selection.InlineFragmentSelection(let inlineFragment):
+      return inlineFragment.prettyPrint()
+    }
+  }
+}
+
+extension Field: PrettyPrintable {
+  public func prettyPrint() -> String {
     return [
-      _wrap("", _print(field.alias), ": "),
-      _print(field.name),
-      _wrap("(", _join(field.arguments, ", "),")"),
-      _join(field.directives, " "),
-      _print(field.selectionSet)
+      _wrap("", alias?.prettyPrint(), ": "),
+      name.prettyPrint(),
+      _wrap("(", _join(arguments, ", "), ")"),
+      _join(directives, " "),
+      selectionSet?.prettyPrint()
     ].compactJoinWithSeparator(" ")
-  case let argument as Argument:
-    return [_print(argument.name), _print(argument.value)].compactJoinWithSeparator(": ")
-  case let fragmentSpread as FragmentSpread:
-    return "...\(_print(fragmentSpread.name))" + _wrap(" ", fragmentSpread.directives.flatMap { _print($0) }.joinWithSeparator(" "), " ")
-  case let inlineFragment as InlineFragment:
+  }
+}
+
+extension Argument: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return [name.prettyPrint(), value.prettyPrint()].compactJoinWithSeparator(": ")
+  }
+}
+
+extension FragmentSpread: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "...\(name.prettyPrint())" + _wrap(" ", directives.flatMap {
+      $0.prettyPrint()
+    }.joinWithSeparator(" "), " ")
+  }
+}
+
+extension InlineFragment: PrettyPrintable {
+  public func prettyPrint() -> String {
     return [
       "...",
-      _wrap("on ", _print(inlineFragment.typeCondition)),
-      inlineFragment.directives.flatMap { _print($0) }.joinWithSeparator(" "),
-      _print(inlineFragment.selectionSet)
-      ].compactJoinWithSeparator(" ")
-  case let fragmentDefinition as FragmentDefinition:
+      _wrap("on ", typeCondition?.prettyPrint()),
+      directives.flatMap {
+        $0.prettyPrint()
+      }.joinWithSeparator(" "),
+      selectionSet.prettyPrint()
+    ].compactJoinWithSeparator(" ")
+  }
+}
+
+extension FragmentDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
     return [
       "fragment",
-      _print(fragmentDefinition.name),
+      name.prettyPrint(),
       "on",
-      _print(fragmentDefinition.typeCondition),
-      fragmentDefinition.directives.flatMap { _print($0) }.joinWithSeparator(" "),
-      _print(fragmentDefinition.selectionSet)
-      ].compactJoinWithSeparator(" ")
-  case Value.IntValue(let value):
-    return "\(value)"
-  case Value.FloatValue(let value):
-    return "\(value)"
-  case Value.StringValue(let value):
-    return "\"\(value)\""
-  case Value.BoolValue(let value):
-    return "\(value)"
-  case Value.Enum(let value):
-    return "\(value)"
-  case Value.VariableValue(let variable):
-    return "$\(_print(variable.name))"
-  case Value.List(let values):
-    return "[" + values.flatMap { _print($0) }.joinWithSeparator(", ") + "]"
-  case Value.Object(let fields):
-    return "{" + fields.flatMap { _print($0) }.joinWithSeparator(", ") + "}"
-  case let objectField as ObjectField:
-    return "\(_print(objectField.name)): \(_print(objectField.value))"
-  case let directive as Directive:
-    return "@\(_print(directive.name))" + _wrap("(", directive.arguments.flatMap { _print($0) }.joinWithSeparator(", "), ")")
-  case Type.List(let type):
-    return "[\(_print(type))]"
-  case Type.NonNull(let type):
-    return "\(_print(type))!"
-  case Type.Named(let name):
-    return _print(name)
-  case let objectTypeDefinition as ObjectTypeDefinition:
+      typeCondition.prettyPrint(),
+      directives.flatMap {
+        $0.prettyPrint()
+      }.joinWithSeparator(" "),
+      selectionSet.prettyPrint()
+    ].compactJoinWithSeparator(" ")
+  }
+}
+
+extension Value: PrettyPrintable {
+  public func prettyPrint() -> String {
+    switch self {
+    case Value.IntValue(let value):
+      return "\(value)"
+    case Value.FloatValue(let value):
+      return "\(value)"
+    case Value.StringValue(let value):
+      return "\"\(value)\""
+    case Value.BoolValue(let value):
+      return "\(value)"
+    case Value.Enum(let value):
+      return "\(value)"
+    case Value.VariableValue(let variable):
+      return variable.prettyPrint()
+    case Value.List(let values):
+      return "[" + values.flatMap {
+        $0.prettyPrint()
+      }.joinWithSeparator(", ") + "]"
+    case Value.Object(let fields):
+      return "{" + fields.flatMap {
+        $0.prettyPrint()
+      }.joinWithSeparator(", ") + "}"
+    }
+  }
+}
+
+extension ObjectField: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "\(name.prettyPrint()): \(value.prettyPrint())"
+  }
+}
+
+extension Directive: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "@\(name.prettyPrint())" + _wrap("(", arguments.flatMap {
+      $0.prettyPrint()
+    }.joinWithSeparator(", "), ")")
+  }
+}
+
+extension Type: PrettyPrintable {
+  public func prettyPrint() -> String {
+    switch self {
+    case Type.List(let type):
+      return "[\(type.prettyPrint())]"
+    case Type.NonNull(let type):
+      return "\(type.prettyPrint())!"
+    case Type.Named(let name):
+      return name.prettyPrint()
+    }
+  }
+}
+
+extension ObjectTypeDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
     return [
       "type",
-      _print(objectTypeDefinition.name),
-      _wrap("implements ", objectTypeDefinition.interfaces.flatMap { _print($0) }.joinWithSeparator(", ")),
-      _block(objectTypeDefinition.fields.flatMap { _print($0) })
-      ].compactJoinWithSeparator(" ")
-  case let fieldDefinition as FieldDefinition:
-    return "\(_print(fieldDefinition.name))" + _wrap("(", _join(fieldDefinition.arguments, ", "), ")")
-  case let inputValueDefinition as InputValueDefinition:
-    return _print(inputValueDefinition.name) +
+      name.prettyPrint(),
+      _wrap("implements ", interfaces.flatMap {
+        $0.prettyPrint()
+      }.joinWithSeparator(", ")),
+      _block(fields.flatMap {
+        $0.prettyPrint()
+      })
+    ].compactJoinWithSeparator(" ")
+  }
+}
+
+extension FieldDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "\(name.prettyPrint())" + _wrap("(", _join(arguments, ", "), ")")
+  }
+}
+
+extension TypeDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    switch self {
+    case Object(let definition):
+      return definition.prettyPrint()
+    case Interface(let definition):
+      return definition.prettyPrint()
+    case Union(let definition):
+      return definition.prettyPrint()
+    case Scalar(let definition):
+      return definition.prettyPrint()
+    case Enum(let definition):
+      return definition.prettyPrint()
+    case InputObject(let definition):
+      return definition.prettyPrint()
+    }
+  }
+}
+
+extension InputValueDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return name.prettyPrint() +
       ": " +
-      "\(_print(inputValueDefinition.type))" +
-      _wrap(" = ", _print(inputValueDefinition.defaultValue))
-  case let interfaceTypeDefinition as InterfaceTypeDefinition:
-    return "interface " + _print(interfaceTypeDefinition.name) + " " + _block(interfaceTypeDefinition.fields.flatMap { _print($0) })
-  case let unionTypeDefinition as UnionTypeDefinition:
-    return "union " + _print(unionTypeDefinition.name) + " = " + _join(unionTypeDefinition.types, " | ")
-  case let scalarTypeDefinition as ScalarTypeDefinition:
-    return "scalar " + _print(scalarTypeDefinition.name)
-  case let enumTypeDefinition as EnumTypeDefinition:
-    return "enum " + _print(enumTypeDefinition.name) + " " + _block(enumTypeDefinition.values.flatMap { _print($0) })
-  case let enumValueDefinition as EnumValueDefinition:
-    return _print(enumValueDefinition.name)
-  case let inputObjectTypeDefinition as InputObjectTypeDefinition:
-    return "input " + _print(inputObjectTypeDefinition.name) + _block(inputObjectTypeDefinition.fields.flatMap { _print($0) })
-  case let typeExtensionDefinition as TypeExtensionDefinition:
-    return "extend " + (_print(typeExtensionDefinition.definition) ?? "")
-  case let variable as Variable:
-    return "$\(_print(variable.name))"
-  case let name as Name:
-    return name.value ?? ""
-  default:
-    return "NOT IMPLEMENTED \(node)"
+      "\(type.prettyPrint())" +
+      _wrap(" = ", defaultValue?.prettyPrint())
+  }
+}
+
+extension InterfaceTypeDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "interface " + name.prettyPrint() + " " + _block(fields.flatMap {
+      $0.prettyPrint()
+    })
+  }
+}
+
+extension UnionTypeDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "union " + name.prettyPrint() + " = " + _join(types, " | ")
+  }
+}
+
+extension ScalarTypeDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "scalar " + name.prettyPrint()
+  }
+}
+
+extension EnumTypeDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "enum " + name.prettyPrint() + " " + _block(values.flatMap {
+      $0.prettyPrint()
+    })
+  }
+}
+
+extension EnumValueDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return name.prettyPrint()
+  }
+}
+
+extension InputObjectTypeDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "input " + name.prettyPrint() + _block(fields.flatMap {
+      $0.prettyPrint()
+    })
+  }
+}
+
+extension TypeExtensionDefinition: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "extend " + (definition.prettyPrint() ?? "")
+  }
+}
+
+extension Variable: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return "$\(name.prettyPrint())"
+  }
+}
+
+extension Name: PrettyPrintable {
+  public func prettyPrint() -> String {
+    return value ?? ""
   }
 }
 
@@ -152,23 +308,35 @@ private func _wrap(start: String, _ string: String?, _ end: String = "") -> Stri
   }
 }
 
-private func _join<T: CollectionType>(elements: T, _ separator: String = "") -> String {
+private func _join<T:CollectionType>(elements: T, _ separator: String = "") -> String {
   if elements.isEmpty {
     return ""
   } else {
-    return elements.flatMap { $0 as? Node}.flatMap { _print($0) }.joinWithSeparator(separator)
+    return elements.flatMap {
+      $0 as? PrettyPrintable
+    }.map {
+      $0.prettyPrint()
+    }.joinWithSeparator(separator)
   }
 }
 
 extension SequenceType where Generator.Element == String? {
   private func compactJoinWithSeparator(separator: String) -> String {
-    return self.flatMap { $0 }.filter { !$0.isEmpty }.joinWithSeparator(separator) ?? ""
+    return self.flatMap {
+      $0
+    }.filter {
+      !$0.isEmpty
+    }.joinWithSeparator(separator) ?? ""
   }
 }
 
-extension SequenceType where Generator.Element == Node? {
+extension SequenceType where Generator.Element: PrettyPrintable {
   private func _printWithSeparator(separator: String) -> String {
-    return self.flatMap { _print($0) }.filter { !$0.isEmpty }.joinWithSeparator(separator) ?? ""
+    return self.flatMap {
+      $0.prettyPrint()
+    }.filter {
+      !$0.isEmpty
+    }.joinWithSeparator(separator) ?? ""
   }
 }
 

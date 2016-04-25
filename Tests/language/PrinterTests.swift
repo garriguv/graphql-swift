@@ -7,7 +7,7 @@ class PrinterTests: XCTestCase {
   func testPrintsMinimalAst() {
     let ast = Field(alias: nil, name: Name(value: "foo"), arguments: [], directives: [], selectionSet: SelectionSet(selections: []))
 
-    XCTAssertEqual(print(ast), "foo")
+    XCTAssertEqual(ast.prettyPrint(), "foo")
   }
 
   func testPrintsKitchenSink() {
@@ -35,7 +35,7 @@ class PrinterTests: XCTestCase {
       "  }\n" +
       "}\n" +
       "\n" +
-      "mutation likeStory() {\n" +
+      "mutation likeStory {\n" +
       "  like (story: 123) @defer {\n" +
       "    story {\n" +
       "      id\n" +
@@ -65,7 +65,7 @@ class PrinterTests: XCTestCase {
       "  query\n" +
       "}\n"
 
-    XCTAssertEqual(print(ast), expectedKitchenSink)
+    XCTAssertEqual(ast.prettyPrint(), expectedKitchenSink)
   }
 
 }
