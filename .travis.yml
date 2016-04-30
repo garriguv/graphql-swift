@@ -1,0 +1,10 @@
+language: objective-c
+osx_image: xcode7.3
+before_install:
+  - gem install xcpretty
+  - gem install xcpretty-travis-formatter
+script: scripts/ci $platform
+env:
+  - platform=iOS
+  - platform=tvOS
+  - platform=OSX
