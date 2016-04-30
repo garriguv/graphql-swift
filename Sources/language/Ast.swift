@@ -135,10 +135,10 @@ public func == (lhs: FragmentDefinition, rhs: FragmentDefinition) -> Bool {
 
 public indirect enum Value: Node {
   case VariableValue(Variable)
-  case IntValue(Int)
-  case FloatValue(Float)
+  case IntValue(String)
+  case FloatValue(String)
   case StringValue(String)
-  case BoolValue(Bool)
+  case BoolValue(String)
   case Enum(String)
   case List([Value])
   case Object([ObjectField])
