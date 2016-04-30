@@ -10,11 +10,54 @@ class PrinterTests: XCTestCase {
     XCTAssertEqual(ast.prettyPrint(), "foo")
   }
 
+  func testCorrectlyPrintsNonQueryOperationsWithoutName() {
+    let ast = try! Parser(source: "query { id, name }").parse()
+
+    let expected = "{\n" +
+      "  id\n" +
+      "  name\n" +
+      "}\n"
+
+    XCTAssertEqual(ast.prettyPrint(), expected)
+  }
+
+  func testCorrectlyPrintsMutationsWithName() {
+    let ast = try! Parser(source: "mutation { id, name }").parse()
+
+    let expected = "mutation {\n" +
+      "  id\n" +
+      "  name\n" +
+      "}\n"
+
+    XCTAssertEqual(ast.prettyPrint(), expected)
+  }
+
+  func testCorrectlyPrintsQueryWithArgumentAndDirective() {
+    let ast = try! Parser(source: "query ($foo: TestType) @testDirective { id, name }").parse()
+
+    let expected = "query ($foo: TestType) @testDirective {\n" +
+      "  id\n" +
+      "  name\n" +
+      "}\n"
+
+    XCTAssertEqual(ast.prettyPrint(), expected)
+  }
+
+  func testCorrectlyPrintsMutationWithArgumentAndDirective() {
+    let ast = try! Parser(source: "mutation ($foo: TestType) @testDirective { id, name }").parse()
+
+    let expected = "mutation ($foo: TestType) @testDirective {\n" +
+      "  id\n" +
+      "  name\n" +
+      "}\n"
+
+    XCTAssertEqual(ast.prettyPrint(), expected)
+  }
+
   func testPrintsKitchenSink() {
     let ast = try! Parser(source: graphQlQuery("kitchen_sink")).parse()
 
-    let expectedKitchenSink =
-      "query queryName($foo: ComplexType, $site: Site = MOBILE) {\n" +
+    let expectedKitchenSink = "query queryName($foo: ComplexType, $site: Site = MOBILE) {\n" +
       "  whoever123is:  node (id: [123, 456]) {\n" +
       "    id\n" +
       "    ... on User @defer {\n" +

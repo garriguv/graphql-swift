@@ -39,10 +39,10 @@ extension OperationDefinition: PrettyPrintable {
         [
           name?.prettyPrint(),
           renderedVariableDefinitions
-          ].compactJoinWithSeparator(""),
+        ].compactJoinWithSeparator(""),
         renderedDirectives,
         selectionSet.prettyPrint()
-        ].compactJoinWithSeparator(" ")
+      ].compactJoinWithSeparator(" ")
       return arr
     }
   }
