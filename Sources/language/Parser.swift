@@ -10,8 +10,6 @@ enum ParserError: ErrorType {
   case UnexpectedToken(Token)
   case UnexpectedKeyword(Keyword, Token)
   case WrongTokenKind(TokenKind, TokenKind)
-  case InvalidIntLiteral(String?)
-  case InvalidFloatLiteral(String?)
 }
 
 public class Parser {
@@ -115,7 +113,7 @@ extension Parser {
     return peek(.Spread) ? try parseFragment() : Selection.FieldSelection(try parseField())
   }
 
-  private func parseField() throws -> Field{
+  private func parseField() throws -> Field {
     let nameOrAlias = try parseName()
     let alias: Name?
     let name: Name
@@ -205,17 +203,17 @@ extension Parser {
     case .BraceL:
       return try parseObject(isConst: isConst)
     case .Int:
-      guard let value = token.value, let intValue = Int(value) else {
-        throw ParserError.InvalidIntLiteral(token.value)
+      guard let value = token.value else {
+        throw ParserError.UnexpectedToken(token)
       }
       try advance()
-      return .IntValue(intValue)
+      return .IntValue(value)
     case .Float:
-      guard let value = token.value, let floatValue = Float(value) else {
-        throw ParserError.InvalidFloatLiteral(token.value)
+      guard let value = token.value else {
+        throw ParserError.UnexpectedToken(token)
       }
       try advance()
-      return .FloatValue(floatValue)
+      return .FloatValue(value)
     case .String:
       guard let value = token.value else {
         throw ParserError.UnexpectedToken(token)
@@ -223,10 +221,9 @@ extension Parser {
       try advance()
     return .StringValue(value)
     case .Name:
-      if (token.value == Keyword.boolFalse.rawValue || token.value == Keyword.boolTrue.rawValue) {
-        let value = token.value
+      if let value = token.value where (value == Keyword.boolFalse.rawValue || value == Keyword.boolTrue.rawValue) {
         try advance()
-        return .BoolValue(value == Keyword.boolTrue.rawValue)
+        return .BoolValue(value)
       } else if (token.value != Keyword.null.rawValue) {
         guard let value = token.value else {
           throw ParserError.UnexpectedToken(token)
