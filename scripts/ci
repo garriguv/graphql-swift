@@ -1,0 +1,21 @@
+#!/bin/sh
+
+readonly WORKSPACE="graphql.xcworkspace"
+
+build() {
+  local scheme=$1
+  local destination=$2
+  xcodebuild -workspace $WORKSPACE -scheme "$scheme" -destination "$destination" test CODE_SIGNING_REQUIRED=NO \
+    | xcpretty -f `xcpretty-travis-formatter`
+}
+
+main() {
+  local platform=$1
+  case $platform in
+    iOS)  build 'GraphQL iOS Tests' 'platform=iOS Simulator,OS=9.3,name=iPhone 6s';;
+    tvOS) build 'GraphQL tvOS Tests' 'platform=tvOS Simulator,OS=9.2,name=Apple TV 1080p';;
+    OSX)  build 'GraphQL OS X Tests' 'platform=OS X,arch=x86_64';;
+    *)    echo "Unknown platform: $platform" && exit 1;;
+  esac
+}
+main $1
