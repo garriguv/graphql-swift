@@ -172,9 +172,11 @@ class ParserTests: XCTestCase {
   func testParsesNamedSubscriptionOperations() {
     parseWithoutError("\n subscription Foo {\n subscriptionField\n }\n")
   }
+
 }
 
 extension ParserTests {
+
   func parseWithoutError(source: String, file: String = #file, line: UInt = #line) {
     let sut = Parser(source: source)
 
@@ -184,4 +186,5 @@ extension ParserTests {
       recordFailureWithDescription("Unexpected error: \(error)", inFile: file, atLine: line, expected: true)
     }
   }
+
 }
