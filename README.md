@@ -2,4 +2,14 @@
 
 Swift implementation of [GraphQL].
 
+## Unit tests
+
+    ./scripts/ci OSX
+    ./scripts/ci iOS
+    ./scripts/ci tvOS
+
+## Linter
+
+    ./scripts/tailor
+
 [GraphQL]: http://graphql.org/
