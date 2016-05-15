@@ -38,23 +38,26 @@ public class Lexer {
 }
 
 extension Lexer {
+
   @warn_unused_result public func next() throws -> Token {
     return try readToken()
   }
+
 }
 
 extension Lexer {
+
   private func readToken() throws -> Token {
     skipWhitespace()
 
-    if (position >= source.endIndex) {
+    if position >= source.endIndex {
       return Token(kind: .EOF, start: source.endIndex, end: source.endIndex, value: nil)
     }
 
     let scalar = source[position]
     let code = scalar.value
 
-    if (code < 0x0020 && code != 0x0009 && code != 0x000A && code != 0x000D) {
+    if code < 0x0020 && code != 0x0009 && code != 0x000A && code != 0x000D {
       throw LexerError.InvalidCharacter(position, Character(source[position]))
     }
 
@@ -66,11 +69,11 @@ extension Lexer {
     case 95:        // _
       fallthrough
     case 97...122:  // a-z
-      return try readName();
+      return try readName()
     case 45:        // -
       fallthrough
     case 48...57:   // 0-9
-      return try readNumber();
+      return try readNumber()
     case 33:        // !
       position = position.successor()
       return Token(kind: .Bang, start: position.predecessor(), end: position, value: nil)
@@ -84,7 +87,7 @@ extension Lexer {
       position = position.successor()
       return Token(kind: .ParenR, start: position.predecessor(), end: position, value: nil)
     case 46:        // .
-      if (source[position.successor()].value == 46 && source[position.successor().successor()].value == 46) {
+      if source[position.successor()].value == 46 && source[position.successor().successor()].value == 46 {
         let start = position
         position = position.successor().successor().successor()
         return Token(kind: .Spread, start: start, end: position, value: nil)
@@ -121,9 +124,9 @@ extension Lexer {
 
   private func readName() throws -> Token {
     let start = position
-    while (position < source.endIndex) {
+    while position < source.endIndex {
       let code = source[position].value
-      if (!codeIsAlphanumeric(code)) {
+      if !codeIsAlphanumeric(code) {
         break
       }
       position = position.successor()
@@ -146,25 +149,23 @@ extension Lexer {
     var chunkStart = start
     var value = ""
 
-    while (position < source.endIndex) {
+    while position < source.endIndex {
       var code = source[position].value
-      if (
-        code == 0x000A || // line feed
-        code == 0x000D || // carriage return
-        code == 34        // "
-      ) {
+      if code == 0x000A || // line feed
+        code == 0x000D ||  // carriage return
+        code == 34 {       // "
         break
       }
 
-      if (code < 0x0020 && code != 0x0009) {
+      if code < 0x0020 && code != 0x0009 {
         throw LexerError.InvalidCharacterWithinString(position, Character(source[position]))
       }
 
       position = position.successor()
-      if (code == 92) {  // \\
+      if code == 92 {  // \\
         value += String(source[chunkStart..<position.predecessor()])
         code = source[position].value
-        switch (code) {
+        switch code {
         case 34:  // "
           value.append(UnicodeScalar(34))
         case 47:  // \/
@@ -187,7 +188,7 @@ extension Lexer {
       }
     }
 
-    if (source[position].value != 34) {
+    if source[position].value != 34 {
       throw LexerError.UnterminatedString(position)
     }
 
@@ -211,15 +212,15 @@ extension Lexer {
     var isFloat = false
     var code = source[position].value
 
-    if (code == 45) { // -
+    if code == 45 { // -
       position = position.successor()
       code = source[position].value
     }
 
-    if (code == 48) { // 0
+    if code == 48 { // 0
       position = position.successor()
       code = source[position].value
-      if (code >= 48 && code <= 57) {
+      if code >= 48 && code <= 57 {
         throw LexerError.UnexpectedCharacterInNumberAfterZero(position, Character(source[position]))
       }
     } else {
@@ -227,7 +228,7 @@ extension Lexer {
     }
 
     code = source[position].value
-    if (code == 46) { // .
+    if code == 46 { // .
       isFloat = true
 
       position = position.successor()
@@ -235,12 +236,12 @@ extension Lexer {
     }
 
     code = source[position].value
-    if (code == 69 || code == 101) { // E e
+    if code == 69 || code == 101 { // E e
       isFloat = true
       position = position.successor()
 
       code = source[position].value
-      if (code == 43 || code == 45) { // - +
+      if code == 43 || code == 45 { // - +
         position = position.successor()
       }
       try readDigits()
@@ -251,32 +252,28 @@ extension Lexer {
 
   private func readDigits() throws {
     var code = source[position].value
-    if (48...57 ~= code) {
+    if 48...57 ~= code {
       repeat {
         position = position.successor()
         code = source[position].value
-      } while (position < source.endIndex && 48...57 ~= code)
+      } while position < source.endIndex && 48...57 ~= code
     } else {
       throw LexerError.UnexpectedCharacterInNumber(position, Character(source[position]))
     }
   }
 
   private func skipWhitespace() {
-    while (position < source.endIndex) {
+    while position < source.endIndex {
       let scalar = source[position]
       let code = scalar.value
-      if (
-        code == 0xFEFF || // zero width no brake space
-        code == 0x0009 || // horizontal tabulation
-        code == 0x0020 || // space
-        code == 0x000A || // line feed
-        code == 0x000D || // carriage return
-        code == 0x002C    // comma
-      ) {
+      if code == 0xFEFF || // zero width no brake space
+        code == 0x0009 ||  // horizontal tabulation
+        code == 0x0020 ||  // space
+        code == 0x000A ||  // line feed
+        code == 0x000D ||  // carriage return
+        code == 0x002C {   // comma
         position = position.successor()
-      } else if (
-        code == 35 // number sign #
-      ) {
+      } else if code == 35 { // number sign #
         skipComment()
       } else {
         break
@@ -285,13 +282,11 @@ extension Lexer {
   }
 
   private func skipComment() {
-    while (position < source.endIndex) {
+    while position < source.endIndex {
       let scalar = source[position]
       let code = scalar.value
-      if (
-        code == 0x000A || // line feed
-        code == 0x000D    // carriage return
-      ) {
+      if code == 0x000A || // line feed
+        code == 0x000D {   // carriage return
         break
       }
       position = position.successor()
