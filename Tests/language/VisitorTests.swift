@@ -80,6 +80,7 @@ class VisitorTests: XCTestCase {
     let ast = try! Parser(source: graphQlQuery("kitchen_sink")).parse()
 
     var array: [String] = []
+
     func visitorFn(marker: String) -> VisitorFunction {
       return {
         (node: Node) in
@@ -455,4 +456,5 @@ class VisitorTests: XCTestCase {
       "leave Definition",
       "leave Document"])
   }
+
 }

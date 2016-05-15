@@ -1,9 +1,9 @@
 import Foundation
 
 enum Keyword: String {
-  case on, fragment, boolTrue = "true", boolFalse = "false", null, implements
-  case type, interface, union, scalar, enumType = "enum", input, extend
-  case query, mutation, subscription
+  case On = "on", Fragment = "fragment", BoolTrue = "true", BoolFalse = "false", Null = "null", Implements = "implements"
+  case Type = "type", Interface = "interface", Union = "union", Scalar, EnumType = "enum", Input = "input", Extend = "extend"
+  case Query = "query", Mutation = "mutation", Subscription = "subscription"
 }
 
 enum ParserError: ErrorType {
@@ -24,48 +24,52 @@ public class Parser {
     token = try lexer.next()
     return try parseDocument()
   }
+
 }
 
 extension Parser {
+
   private func parseDocument() throws -> Document {
     var definitions: [Definition] = []
 
     repeat {
       definitions.append(try parseDefinition())
-    } while (try !skip(.EOF))
+    } while try !skip(.EOF)
 
     return Document(definitions: definitions)
   }
 
   private func parseDefinition() throws -> Definition {
-    if (peek(.BraceL)) {
+    if peek(.BraceL) {
       return .Operation(try parseOperationDefinition())
     }
 
-    guard peek(.Name), let value = token.value, let keyword = Keyword(rawValue: value) else {
+    guard peek(.Name), let value = token.value, keyword = Keyword(rawValue: value) else {
       throw ParserError.UnexpectedToken(token)
     }
 
     switch keyword {
-    case .query, .mutation, .subscription:
+    case .Query, .Mutation, .Subscription:
       return .Operation(try parseOperationDefinition())
-    case .fragment:
+    case .Fragment:
       return .Fragment(try parseFragmentDefinition())
-    case .type, .interface, .union, .scalar, .enumType, .input:
+    case .Type, .Interface, .Union, .Scalar, .EnumType, .Input:
       return .Type(try parseTypeDefinition())
-    case .extend:
+    case .Extend:
       return .TypeExtension(try parseTypeExtensionDefinition())
     default:
       throw ParserError.UnexpectedToken(token)
     }
   }
+
 }
 
 extension Parser {
+
   private func parseOperationDefinition() throws -> OperationDefinition {
-    if (peek(.BraceL)) {
+    if peek(.BraceL) {
       return OperationDefinition(
-        type: .query,
+        type: .Query,
         name: nil,
         variableDefinitions: [],
         directives: [],
@@ -74,7 +78,7 @@ extension Parser {
 
     let operationToken = try expect(.Name)
 
-    guard let typeString = operationToken.value, let type = OperationType(rawValue: typeString) else {
+    guard let typeString = operationToken.value, type = OperationType(rawValue: typeString) else {
       throw ParserError.UnexpectedToken(operationToken)
     }
 
@@ -117,7 +121,7 @@ extension Parser {
     let nameOrAlias = try parseName()
     let alias: Name?
     let name: Name
-    if (try skip(.Colon)) {
+    if try skip(.Colon) {
       alias = nameOrAlias
       name = try parseName()
     } else {
@@ -148,20 +152,22 @@ extension Parser {
     let nameToken = try expect(.Name)
     return Name(value: nameToken.value)
   }
+
 }
 
 extension Parser {
+
   private func parseFragment() throws -> Selection {
     try expect(.Spread)
 
-    if (peek(.Name) && token.value != Keyword.on.rawValue) {
+    if peek(.Name) && token.value != Keyword.On.rawValue {
       return .FragmentSpreadSelection(FragmentSpread(
       name: try parseFragmentName(),
         directives: try parseDirectives()))
     }
 
     let typeCondition: Type?
-    if (token.value == Keyword.on.rawValue) {
+    if token.value == Keyword.On.rawValue {
       try advance()
       typeCondition = try parseNamedType()
     } else {
@@ -175,9 +181,9 @@ extension Parser {
   }
 
   private func parseFragmentDefinition() throws -> FragmentDefinition {
-    try expectKeyword(.fragment)
+    try expectKeyword(.Fragment)
     let name = try parseFragmentName()
-    try expectKeyword(.on)
+    try expectKeyword(.On)
     let typeCondition = try parseNamedType()
     return FragmentDefinition(
     name: name,
@@ -188,16 +194,18 @@ extension Parser {
   }
 
   private func parseFragmentName() throws -> Name {
-    if (token.value == Keyword.on.rawValue) {
+    if token.value == Keyword.On.rawValue {
       throw ParserError.UnexpectedToken(token)
     }
     return try parseName()
   }
+
 }
 
 extension Parser {
+
   private func parseValueLiteral(isConst isConst: Bool) throws -> Value {
-    switch (token.kind) {
+    switch token.kind {
     case .BracketL:
       return try parseList(isConst: isConst)
     case .BraceL:
@@ -219,12 +227,12 @@ extension Parser {
         throw ParserError.UnexpectedToken(token)
       }
       try advance()
-    return .StringValue(value)
+      return .StringValue(value)
     case .Name:
-      if let value = token.value where (value == Keyword.boolFalse.rawValue || value == Keyword.boolTrue.rawValue) {
+      if let value = token.value where (value == Keyword.BoolFalse.rawValue || value == Keyword.BoolTrue.rawValue) {
         try advance()
         return .BoolValue(value)
-      } else if (token.value != Keyword.null.rawValue) {
+      } else if token.value != Keyword.Null.rawValue {
         guard let value = token.value else {
           throw ParserError.UnexpectedToken(token)
         }
@@ -232,7 +240,7 @@ extension Parser {
         return .Enum(value)
       }
     case .Dollar:
-      if (!isConst) {
+      if !isConst {
         return .VariableValue(try parseVariable())
       }
     default:
@@ -248,7 +256,7 @@ extension Parser {
   private func parseObject(isConst isConst: Bool) throws -> Value {
     try expect(.BraceL)
     var fields: [ObjectField] = []
-    while (try !skip(.BraceR)) {
+    while try !skip(.BraceR) {
       fields.append(try parseObjectField(isConst: isConst))
     }
     return .Object(fields)
@@ -260,12 +268,14 @@ extension Parser {
     let value = try parseValueLiteral(isConst: isConst)
     return ObjectField(name: name, value: value)
   }
+
 }
 
 extension Parser {
+
   private func parseDirectives() throws -> [Directive] {
     var directives: [Directive] = []
-    while (peek(.At)) {
+    while peek(.At) {
       directives.append(try parseDirective())
     }
     return directives
@@ -275,19 +285,21 @@ extension Parser {
     try expect(.At)
     return Directive(name: try parseName(), arguments: try parseArguments())
   }
+
 }
 
 extension Parser {
+
   private func parseType() throws -> Type {
     let type: Type
-    if (try skip(.BracketL)) {
+    if try skip(.BracketL) {
       let listType = try parseType()
       try expect(.BracketR)
       type = .List(listType)
     } else {
       type = try parseNamedType()
     }
-    if (try skip(.Bang)) {
+    if try skip(.Bang) {
       return .NonNull(type)
     }
     return type
@@ -296,30 +308,32 @@ extension Parser {
   private func parseNamedType() throws -> Type {
     return .Named(try parseName())
   }
+
 }
 
 extension Parser {
+
   private func parseTypeDefinition() throws -> TypeDefinition {
-    if (!peek(.Name)) {
+    if !peek(.Name) {
       throw ParserError.UnexpectedToken(token)
     }
 
-    guard let value = token.value, let type = Keyword(rawValue: value) else {
+    guard let value = token.value, type = Keyword(rawValue: value) else {
       throw ParserError.UnexpectedToken(token)
     }
 
     switch type {
-    case .type:
+    case .Type:
       return .Object(try parseObjectTypeDefinition())
-    case .interface:
+    case .Interface:
       return .Interface(try parseInterfaceTypeDefinition())
-    case .union:
+    case .Union:
       return .Union(try parseUnionTypeDefinition())
-    case .scalar:
+    case .Scalar:
       return .Scalar(try parseScalarTypeDefinition())
-    case .enumType:
+    case .EnumType:
       return .Enum(try parseEnumTypeDefinition())
-    case .input:
+    case .Input:
       return .InputObject(try parseInputObjectTypeDefinition())
     default:
       throw ParserError.UnexpectedToken(token)
@@ -327,7 +341,7 @@ extension Parser {
   }
 
   private func parseObjectTypeDefinition() throws -> ObjectTypeDefinition {
-    try expectKeyword(.type)
+    try expectKeyword(.Type)
     return ObjectTypeDefinition(
       name: try parseName(),
       interfaces: try parseImplementsInterfaces(),
@@ -335,12 +349,12 @@ extension Parser {
   }
 
   private func parseImplementsInterfaces() throws -> [Type] {
-    if (token.value == Keyword.implements.rawValue) {
+    if token.value == Keyword.Implements.rawValue {
       try advance()
       var types: [Type] = []
       repeat {
         types.append(try parseNamedType())
-      } while (!peek(.BraceL))
+      } while !peek(.BraceL)
       return types
     }
     return []
@@ -355,7 +369,7 @@ extension Parser {
   }
 
   private func parseArgumentDefinitions() throws -> [InputValueDefinition] {
-    if (peek(.ParenL)) {
+    if peek(.ParenL) {
       return try many(openKind: .ParenL, parseFn: parseInputValueDefinition, closeKind: .ParenR)
     }
     return []
@@ -370,14 +384,14 @@ extension Parser {
   }
 
   private func parseInterfaceTypeDefinition() throws -> InterfaceTypeDefinition {
-    try expectKeyword(.interface)
+    try expectKeyword(.Interface)
     return InterfaceTypeDefinition(
       name: try parseName(),
       fields: try any(openKind: .BraceL, parseFn: parseFieldDefinition, closeKind: .BraceR))
   }
 
   private func parseUnionTypeDefinition() throws -> UnionTypeDefinition {
-    try expectKeyword(.union)
+    try expectKeyword(.Union)
     let name = try parseName()
     try expect(.Equals)
     let types = try parseUnionMembers()
@@ -388,17 +402,17 @@ extension Parser {
     var members: [Type] = []
     repeat {
       members.append(try parseNamedType())
-    } while (try skip(.Pipe))
+    } while try skip(.Pipe)
     return members
   }
 
   private func parseScalarTypeDefinition() throws -> ScalarTypeDefinition {
-    try expectKeyword(.scalar)
+    try expectKeyword(.Scalar)
     return ScalarTypeDefinition(name: try parseName())
   }
 
   private func parseEnumTypeDefinition() throws -> EnumTypeDefinition {
-    try expectKeyword(.enumType)
+    try expectKeyword(.EnumType)
     return EnumTypeDefinition(
       name: try parseName(),
       values: try many(openKind: .BraceL, parseFn: parseEnumValueDefinition, closeKind: .BraceR))
@@ -409,26 +423,28 @@ extension Parser {
   }
 
   private func parseInputObjectTypeDefinition() throws -> InputObjectTypeDefinition {
-    try expectKeyword(.input)
+    try expectKeyword(.Input)
     return InputObjectTypeDefinition(
       name: try parseName(),
       fields: try any(openKind: .BraceL, parseFn: parseInputValueDefinition, closeKind: .BraceR))
   }
 
   private func parseTypeExtensionDefinition() throws -> TypeExtensionDefinition {
-    try expectKeyword(.extend)
+    try expectKeyword(.Extend)
     return TypeExtensionDefinition(definition: try parseObjectTypeDefinition())
   }
+
 }
 
 extension Parser {
+
   private func advance() throws {
     token = try lexer.next()
   }
 
   private func skip(kind: TokenKind) throws -> Bool {
     let match = token.kind == kind
-    if (match) {
+    if match {
       try advance()
     }
     return match
@@ -440,7 +456,7 @@ extension Parser {
 
   private func expect(kind: TokenKind) throws -> Token {
     let currentToken = token
-    if (currentToken.kind == kind) {
+    if currentToken.kind == kind {
       try advance()
       return currentToken
     }
@@ -449,7 +465,7 @@ extension Parser {
 
   private func expectKeyword(keyword: Keyword) throws -> Token {
     let currentToken = token
-    if (token.kind == .Name && token.value == keyword.rawValue) {
+    if token.kind == .Name && token.value == keyword.rawValue {
       try advance()
       return currentToken
     }
@@ -459,7 +475,7 @@ extension Parser {
   private func any<T>(openKind openKind: TokenKind, parseFn: () throws -> T, closeKind: TokenKind) throws -> [T] {
     try expect(openKind)
     var nodes: [T] = []
-    while (try !skip(closeKind)) {
+    while try !skip(closeKind) {
       nodes.append(try parseFn())
     }
     return nodes
@@ -467,16 +483,19 @@ extension Parser {
 
   private func many<T>(openKind openKind: TokenKind, parseFn: () throws -> T, closeKind: TokenKind) throws -> [T] {
     try expect(openKind)
-    var nodes = [ try parseFn() ]
-    while (try !skip(closeKind)) {
+    var nodes = [try parseFn()]
+    while try !skip(closeKind) {
       nodes.append(try parseFn())
     }
     return nodes
   }
+
 }
 
 extension Parser {
+
   private func syntaxError(token: Token) throws {
     throw ParserError.UnexpectedToken(token)
   }
+
 }
