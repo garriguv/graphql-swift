@@ -1,0 +1,6 @@
+#!/bin/sh
+
+main() {
+  tailor -f html > tailor_report.html
+}
+main
