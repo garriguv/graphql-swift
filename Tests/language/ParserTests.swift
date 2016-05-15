@@ -34,7 +34,7 @@ class ParserTests: XCTestCase {
     do {
       let _ = try sut.parse()
     } catch ParserError.UnexpectedKeyword(let expectedKeyword, let actualToken) {
-      XCTAssertEqual(expectedKeyword, Keyword.on)
+      XCTAssertEqual(expectedKeyword, Keyword.On)
       XCTAssertEqual(actualToken.kind, TokenKind.Name)
       XCTAssertEqual(actualToken.value, "Type")
     } catch {
