@@ -31,7 +31,7 @@ extension OperationDefinition: PrettyPrintable {
   public func prettyPrint() -> String {
     let renderedVariableDefinitions = variableDefinitions.prettyPrintWithSeparator(", ").surroundWith("(", ")")
     let renderedDirectives = directives.prettyPrintWithSeparator(" ")
-    if type == .query && name == nil && renderedDirectives.isEmpty && renderedVariableDefinitions.isEmpty {
+    if type == .Query && name == nil && renderedDirectives.isEmpty && renderedVariableDefinitions.isEmpty {
       return selectionSet.prettyPrint()
     } else {
       let arr = [

@@ -226,8 +226,8 @@ public func == (lhs: Argument, rhs: Argument) -> Bool {
     lhs.value == rhs.value
 }
 
-public enum OperationType: String {
-  case query, mutation, subscription
+public enum OperationType {
+  case Query, Mutation, Subscription
 }
 
 public struct OperationDefinition: Node {

@@ -69,7 +69,7 @@ extension Parser {
   private func parseOperationDefinition() throws -> OperationDefinition {
     if peek(.BraceL) {
       return OperationDefinition(
-        type: .query,
+        type: .Query,
         name: nil,
         variableDefinitions: [],
         directives: [],
