@@ -6,6 +6,7 @@ public struct Visitor: SequenceType {
   @warn_unused_result public func generate() -> VisitorGenerator {
     return VisitorGenerator(node: node)
   }
+
 }
 
 public class VisitorGenerator: GeneratorType {
@@ -27,6 +28,7 @@ public class VisitorGenerator: GeneratorType {
   @warn_unused_result public func next() -> Node? {
     return nodesSlice.popFirst()
   }
+
 }
 
 public enum VisitorBehavior {
@@ -43,7 +45,7 @@ public func visit(node: Node, enter: VisitorFunction, leave: VisitorFunction) {
     leave(node)
   }
 
-  if (behavior == .SkipNode) {
+  if behavior == .SkipNode {
     return
   }
 
